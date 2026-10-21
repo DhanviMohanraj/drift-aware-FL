@@ -1,0 +1,79 @@
+accounting:
+  monitor_bytes: 16
+  overhead_sensitivity_bytes: 64
+  selection_bytes: 8
+budget:
+  b: 0.5
+  bucket_full_rounds: 2
+checkpoint_every: 10
+clinical:
+  calib_frac: 0.2
+  csv_path: data/raw/diabetic_data.csv
+  dirichlet_alpha: 0.5
+  max_retries: 50
+  min_category_count: 10
+  min_client_final: 2000
+  min_client_warm: 300
+  pools:
+  - 0.2
+  - 0.2
+  - 0.6
+  shift_feature: num_lab_procedures
+dataset_overrides:
+  clinical: {}
+detector:
+  allowance: 0.25
+  cooldown: 5
+  credits: 3
+  expiry: 15
+  loss_clip: 5.0
+  refresh_window: 5
+  sd_floor: 0.05
+  severity_clip: 3.0
+  threshold: 6.0
+dev_seeds:
+- 101
+- 102
+evaluation:
+  match_window: 15
+  pre_event_steps: 10
+  recovery_consecutive: 3
+  recovery_floor: 0.01
+  recovery_tolerance: 0.1
+  recovery_window: 5
+  window: 10
+horizon: 100
+model:
+  batch_size: 64
+  buffer_size: 256
+  hidden:
+  - 64
+  - 32
+  local_epochs: 1
+  lr: 0.001
+null_post_start: 40
+num_clients: 4
+policy:
+  eta: 1.0
+  periodic_interval: 2
+  wait_norm: 10
+seeds:
+- 11
+- 22
+- 33
+- 44
+- 55
+synthetic:
+  base_prevalence: 0.3
+  batch_per_step: 64
+  calib_chunks: 20
+  client_offset_sd: 0.5
+  label_flip: 0.05
+  lead_weight_norm: 2.5
+  n_features: 20
+  offset_exclude_rotated: false
+  warm_per_client: 512
+  weight_sd: 0.5
+warm_start:
+  local_epochs: 10
+  rounds: 5

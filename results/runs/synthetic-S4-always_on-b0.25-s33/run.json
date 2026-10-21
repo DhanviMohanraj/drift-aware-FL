@@ -1,0 +1,34 @@
+{
+  "budget_b": 0.25,
+  "config_hash": "a5a0dd6ae9c8b683",
+  "dataset": "synthetic",
+  "dataset_checksum": "0d442304b5c21eef",
+  "end_time": "2026-10-21T16:28:45.013183+00:00",
+  "env": {
+    "cuda": false,
+    "platform": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "python": "3.13.16",
+    "versions": {
+      "matplotlib": "3.11.2",
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyyaml": "6.0.3",
+      "scipy": "1.18.1",
+      "sklearn": "1.9.1",
+      "torch": "2.14.1+cu130"
+    }
+  },
+  "git_commit": "2327e94e4b93112fffd4ab9e41f5b0a8be0f6dac",
+  "method": "always_on",
+  "preprocessing_checksum": "none",
+  "run_id": "synthetic-S4-always_on-b0.25-s33",
+  "scenario": "S4",
+  "seed": 33,
+  "split": "final",
+  "split_checksum": "synthetic-deterministic",
+  "start_time": "2026-10-21T16:28:40.135698+00:00",
+  "status": "complete",
+  "wall_clock_s": 2.5714790270003505,
+  "warm_checksum": "674c25da6a433d5d"
+}

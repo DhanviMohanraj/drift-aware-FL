@@ -1,0 +1,32 @@
+{
+  "complete": [
+    "synthetic-S0-always_on-b0.25-s11",
+    "synthetic-S0-periodic-b0.25-s11",
+    "synthetic-S0-random-b0.25-s11",
+    "synthetic-S0-drift_only-b0.25-s11",
+    "synthetic-S0-known_time-b0.25-s11",
+    "synthetic-S0-proposed-b0.25-s11",
+    "synthetic-S2-always_on-b0.25-s11",
+    "synthetic-S2-periodic-b0.25-s11",
+    "synthetic-S2-random-b0.25-s11",
+    "synthetic-S2-drift_only-b0.25-s11",
+    "synthetic-S2-known_time-b0.25-s11",
+    "synthetic-S2-proposed-b0.25-s11"
+  ],
+  "expected": [
+    "synthetic-S0-always_on-b0.25-s11",
+    "synthetic-S0-periodic-b0.25-s11",
+    "synthetic-S0-random-b0.25-s11",
+    "synthetic-S0-drift_only-b0.25-s11",
+    "synthetic-S0-known_time-b0.25-s11",
+    "synthetic-S0-proposed-b0.25-s11",
+    "synthetic-S2-always_on-b0.25-s11",
+    "synthetic-S2-periodic-b0.25-s11",
+    "synthetic-S2-random-b0.25-s11",
+    "synthetic-S2-drift_only-b0.25-s11",
+    "synthetic-S2-known_time-b0.25-s11",
+    "synthetic-S2-proposed-b0.25-s11"
+  ],
+  "runs_dir": "results/runs",
+  "tier": "smoke"
+}

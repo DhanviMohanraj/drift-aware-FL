@@ -1,0 +1,11 @@
+dataset,scenario,method,mean,std
+synthetic,S0,drift_only,0.019997672588035864,
+synthetic,S0,known_time,0.037458625566740344,
+synthetic,S0,periodic,0.005333478731397001,
+synthetic,S0,proposed,0.019997672588035864,
+synthetic,S0,random,0.0030534865791718158,
+synthetic,S2,drift_only,0.014633191410693913,
+synthetic,S2,known_time,0.05991775475921951,
+synthetic,S2,periodic,0.01966701309832769,
+synthetic,S2,proposed,0.014633191410693913,
+synthetic,S2,random,0.020701415615268448,

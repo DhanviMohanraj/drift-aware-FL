@@ -1,0 +1,13 @@
+run_id,dataset,scenario,method,seed,b,status
+synthetic-S0-always_on-b0.25-s11,synthetic,S0,always_on,11,0.25,complete
+synthetic-S0-periodic-b0.25-s11,synthetic,S0,periodic,11,0.25,complete
+synthetic-S0-random-b0.25-s11,synthetic,S0,random,11,0.25,complete
+synthetic-S0-drift_only-b0.25-s11,synthetic,S0,drift_only,11,0.25,complete
+synthetic-S0-known_time-b0.25-s11,synthetic,S0,known_time,11,0.25,complete
+synthetic-S0-proposed-b0.25-s11,synthetic,S0,proposed,11,0.25,complete
+synthetic-S2-always_on-b0.25-s11,synthetic,S2,always_on,11,0.25,complete
+synthetic-S2-periodic-b0.25-s11,synthetic,S2,periodic,11,0.25,complete
+synthetic-S2-random-b0.25-s11,synthetic,S2,random,11,0.25,complete
+synthetic-S2-drift_only-b0.25-s11,synthetic,S2,drift_only,11,0.25,complete
+synthetic-S2-known_time-b0.25-s11,synthetic,S2,known_time,11,0.25,complete
+synthetic-S2-proposed-b0.25-s11,synthetic,S2,proposed,11,0.25,complete

@@ -82,7 +82,9 @@ application payloads (no TCP/TLS); `bytes_end_to_end_with_overhead` adds 64 B pe
 ## Results
 
 See `results/synthetic/tables/results.md` (generated) and `results/synthetic/figures/`. Summary in
-`RESULTS_SUMMARY.md`.
+`RESULTS_SUMMARY.md`. Headline: at b = 0.25 the proposed scheduler uses ~2.5–7× fewer adaptation bytes
+than periodic but has slightly worse post-change log loss in every synthetic scenario, and its priority rule
+never changes a decision (identical to drift-only) because the budget is not binding.
 
 ## Known limitations / open gates
 

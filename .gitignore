@@ -5,4 +5,3 @@ data/raw/
 results/cache/
 results/**/checkpoint.pkl
 results/**/predictions.csv.gz
-results/**/communication.csv
