@@ -38,3 +38,40 @@ Full tables: `results/synthetic/tables/results.md`; figures: `results/synthetic/
 The 3-credit rule limits adaptation to ~3 local updates per event, so the budget is never contested. To make
 the scheduling question testable: more credits per alarm, a tighter budget (b ≤ 0.10), or more simultaneous
 events. Otherwise report this honestly as a negative / benchmark result (plan section 1).
+
+---
+
+# Clinical results — UCI 296, run in Colab (21 Oct 2026)
+
+130/130 clinical runs complete (C0–C2 × 6 methods × 5 seeds, C1 ablation, C1 budget sweep), 0 failures.
+Dev calibration (`results/calibration_clinical.json`): threshold 6 (0.5 false alarms/100 dev client-steps,
+target met) and periodic interval 2. Tables: `results/combined/tables/results.md`. (The "3 pairing issues"
+printed in Colab were a false alarm: synthetic and clinical legitimately use different configs because of
+`dataset_overrides`; the check now compares within each dataset.)
+
+| Scenario | always-on | periodic | random | drift-only | known-time | proposed |
+|---|---|---|---|---|---|---|
+| C0 no drift | 0.334 | 0.393 | 0.447 | 0.771 | 0.583 | 0.771 |
+| C1 shift, clinics 1–2 | 0.334 | 0.394 | 0.449 | 0.741 | 0.535 | 0.741 |
+| C2 staggered shift | 0.335 | 0.396 | 0.454 | 0.782 | 0.613 | 0.782 |
+
+Post-change pooled log loss, mean of 5 seeds; pooled AUROC 0.55–0.58 for every method.
+
+## What the clinical evidence says — the experiment is not yet informative
+
+1. **The injected drift has no measurable effect.** Always-on loss is identical in C0, C1 and C2 (0.334–0.335).
+   A +1 SD shift in one feature (num_lab_procedures) does not change the task.
+2. **So the detector never fires on it:** 0/2 events detected in C1, 0/3 in C2. Every alarm (~1 per run) is a
+   false alarm. Dev calibration already showed this (20% dev detection).
+3. **Drift-triggered methods therefore almost never retrain** (3 local updates in 100 steps) and stay on the
+   warm-start model → much worse than periodic (+0.35 to +0.39 log loss, 0/5 seeds better).
+4. **Proposed = drift-only again**, and both ablations equal proposed.
+5. **Severe label skew between clinics:** in each seed one clinic gets log loss 2–4 (worst-clinic mean 2.2 even
+   for always-on). Dirichlet(α = 0.5) on a ~9%-positive binary target makes one clinic mostly positives, which a
+   single global model fits badly. AUROC 0.55–0.58 is close to chance.
+
+## Required protocol decisions before the clinical comparison means anything (dev patients only)
+- A clinically meaningful drift: larger or multi-feature measurement shift, or a label-related change.
+- Milder clinic heterogeneity (e.g. Dirichlet α ≥ 1, or allocation by a feature) — this changes the plan's
+  protocol, so agree it with the supervisor.
+- More service credits per alarm (also needed for the synthetic priority question).

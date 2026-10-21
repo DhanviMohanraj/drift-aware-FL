@@ -81,4 +81,8 @@ checkpoint_every: 10
 # Per-dataset overrides (fill from results/calibration_clinical.json after running
 # `python -m src.calibrate --dataset clinical` in Colab, BEFORE final clinical runs).
 dataset_overrides:
-  clinical: {}
+  clinical:                   # frozen from results/calibration_clinical.json (dev patients only)
+    detector:
+      threshold: 6.0
+    policy:
+      periodic_interval: 2

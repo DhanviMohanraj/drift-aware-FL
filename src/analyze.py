@@ -57,9 +57,9 @@ def check_pairing(df):
     for (ds, sc, seed), g in df.groupby(["dataset", "scenario", "seed"]):
         if g.warm_checksum.nunique() > 1:
             issues.append(f"{ds}/{sc}/seed {seed}: warm-start weights differ across methods")
-    for b, g in df.groupby("budget_b"):
+    for (ds, b), g in df.groupby(["dataset", "budget_b"]):   # datasets may differ via dataset_overrides
         if g.config_hash.nunique() > 1:
-            issues.append(f"b={b}: {g.config_hash.nunique()} different config hashes")
+            issues.append(f"{ds} b={b}: {g.config_hash.nunique()} different config hashes")
     return issues
 
 

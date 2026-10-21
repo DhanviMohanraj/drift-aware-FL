@@ -1,0 +1,28 @@
+{
+  "complete": [
+    "clinical-C1-proposed_nosev-b0.25-s11",
+    "clinical-C1-proposed_nosev-b0.25-s22",
+    "clinical-C1-proposed_nosev-b0.25-s33",
+    "clinical-C1-proposed_nosev-b0.25-s44",
+    "clinical-C1-proposed_nosev-b0.25-s55",
+    "clinical-C1-proposed_nowait-b0.25-s11",
+    "clinical-C1-proposed_nowait-b0.25-s22",
+    "clinical-C1-proposed_nowait-b0.25-s33",
+    "clinical-C1-proposed_nowait-b0.25-s44",
+    "clinical-C1-proposed_nowait-b0.25-s55"
+  ],
+  "expected": [
+    "clinical-C1-proposed_nosev-b0.25-s11",
+    "clinical-C1-proposed_nosev-b0.25-s22",
+    "clinical-C1-proposed_nosev-b0.25-s33",
+    "clinical-C1-proposed_nosev-b0.25-s44",
+    "clinical-C1-proposed_nosev-b0.25-s55",
+    "clinical-C1-proposed_nowait-b0.25-s11",
+    "clinical-C1-proposed_nowait-b0.25-s22",
+    "clinical-C1-proposed_nowait-b0.25-s33",
+    "clinical-C1-proposed_nowait-b0.25-s44",
+    "clinical-C1-proposed_nowait-b0.25-s55"
+  ],
+  "runs_dir": "/content/drive/MyDrive/drift-aware-fl-runs",
+  "tier": "ablation_clinical"
+}
