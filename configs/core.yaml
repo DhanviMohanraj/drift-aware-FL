@@ -1,0 +1,84 @@
+# Frozen core configuration for the four-clinic sprint.
+# Thresholds / periodic interval were selected on DEVELOPMENT streams only
+# (see results/calibration_*.json). Do not edit after final evaluation starts.
+
+num_clients: 4
+horizon: 100
+seeds: [11, 22, 33, 44, 55]
+dev_seeds: [101, 102]
+null_post_start: 40          # post-change window start used for no-drift controls (S0, C0)
+
+synthetic:
+  n_features: 20
+  batch_per_step: 64
+  warm_per_client: 512        # warm-start training records per clinic
+  calib_chunks: 20            # disjoint sentinel calibration chunks per clinic
+  client_offset_sd: 0.5       # fixed per-clinic feature mean offset
+  weight_sd: 0.5              # generating coefficients for features 2..19
+  lead_weight_norm: 2.5       # norm of the first two coefficients (the rotated pair)
+  base_prevalence: 0.3
+  label_flip: 0.05            # modest fixed label noise
+  offset_exclude_rotated: false # tried on dev streams; rejected (weaker drift signal once warm-start is fit)
+
+clinical:
+  csv_path: data/raw/diabetic_data.csv
+  pools: [0.2, 0.2, 0.6]      # development, warm-start, final stream (by patient)
+  calib_frac: 0.2             # fraction of warm-start patients reserved for the frozen sentinel
+  dirichlet_alpha: 0.5
+  min_client_final: 2000
+  min_client_warm: 300
+  max_retries: 50
+  min_category_count: 10
+  shift_feature: num_lab_procedures
+
+model:
+  hidden: [64, 32]
+  lr: 0.001
+  batch_size: 64
+  local_epochs: 1
+  buffer_size: 256
+
+warm_start:
+  rounds: 5
+  local_epochs: 10           # chosen on dev streams from {1,5,10,20}; 1 left the sentinel near the prior
+
+detector:
+  allowance: 0.25
+  threshold: 6.0              # selected on dev streams from {3,6,12}: results/calibration_synthetic.json
+  cooldown: 5
+  sd_floor: 0.05
+  loss_clip: 5.0
+  refresh_window: 5
+  credits: 3
+  expiry: 15
+  severity_clip: 3.0
+
+policy:
+  eta: 1.0
+  wait_norm: 10
+  periodic_interval: 2        # selected on dev streams from {2,5,10} (plan default was 5)
+
+budget:
+  b: 0.25
+  bucket_full_rounds: 2
+
+accounting:
+  monitor_bytes: 16           # int32 client, int32 time, float32 severity, int32 flag
+  selection_bytes: 8          # two int32 per selected clinic
+  overhead_sensitivity_bytes: 64
+
+evaluation:
+  window: 10
+  match_window: 15
+  recovery_window: 5
+  recovery_consecutive: 3
+  recovery_tolerance: 0.10
+  recovery_floor: 0.01
+  pre_event_steps: 10
+
+checkpoint_every: 10
+
+# Per-dataset overrides (fill from results/calibration_clinical.json after running
+# `python -m src.calibrate --dataset clinical` in Colab, BEFORE final clinical runs).
+dataset_overrides:
+  clinical: {}

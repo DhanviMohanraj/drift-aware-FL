@@ -1,0 +1,7 @@
+citation,signal,scheduling rule,explicit byte budget,model broadcasts counted,client fairness,datasets,available code,exact difference from our policy,source section/equation
+"Chen, Chai, Cheng, Rangwala. Asynchronous Federated Learning for Sensor Data with Concept Drift (FedConD). arXiv:2109.00151, 2021",TO VERIFY from method section,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY (follow author links only),TO VERIFY,TO FILL
+"Jothimurugesan et al. Federated Learning under Distributed Concept Drift (FedDrift). AISTATS 2023, PMLR 206:5834-5853",TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO FILL
+"Zehtabi, Hosseinalipour, Brinton. Decentralized Event-Triggered Federated Learning with Heterogeneous Communication Thresholds. arXiv:2204.03726, 2022",TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO VERIFY,TO FILL
+"McMahan et al. Communication-Efficient Learning of Deep Networks from Decentralized Data (FedAvg). AISTATS 2017, PMLR 54:1273-1282",n/a (always-on reference),all/fraction of clients each round,no,TO VERIFY,no,TO VERIFY,yes (many),reference baseline only,TO FILL
+PAPER 5 - search budgeted / drift-aware / event-triggered FL (primary sources only),,,,,,,,,
+PAPER 6 - search budgeted / drift-aware / event-triggered FL (primary sources only),,,,,,,,,
