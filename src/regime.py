@@ -29,6 +29,8 @@ DATASET = "synthetic"
 GRIDS = {   # clinical grid is smaller so it fits a Colab session (~1 h with 2 workers)
     "synthetic": dict(budgets=[0.05, 0.10, 0.25], scenarios=["S2", "S3", "S5", "S6"], dev_seeds=[101, 102, 103, 104],
                       methods=METHODS),
+    "semisynthetic": dict(budgets=[0.05, 0.10, 0.25], scenarios=["SS0", "SS2", "SS3", "SS5", "SS6"],
+                          dev_seeds=[101, 102], methods=METHODS),
     "clinical": dict(budgets=[0.05, 0.10], scenarios=["C1", "C2"], dev_seeds=[101, 102],
                      methods=["periodic", "drift_only", "proposed", "proposed_v2", "proposed_v3"]),
 }
@@ -37,7 +39,7 @@ GRIDS = {   # clinical grid is smaller so it fits a Colab session (~1 h with 2 w
 def _job(args):
     cfg, sc, method, seed, b, interval, split = args
     c = deep_update(cfg, {"budget": {"b": b}, "policy": {"periodic_interval": interval}})
-    if DATASET == "clinical":   # per-dataset overrides would replace the interval, so set it there too
+    if DATASET in ("clinical", "semisynthetic"):   # per-dataset overrides would replace the interval
         c = deep_update(c, {"dataset_overrides": {"clinical": {"policy": {"periodic_interval": interval}}}})
     sim = Simulation(c, DATASET, sc, method, seed, split=split)
     sim.run()
@@ -59,7 +61,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/v2.yaml")
     ap.add_argument("--workers", type=int, default=2)
-    ap.add_argument("--dataset", default="synthetic", choices=["synthetic", "clinical"])
+    ap.add_argument("--dataset", default="synthetic", choices=["synthetic", "clinical", "semisynthetic"])
+    ap.add_argument("--seeds", type=int, nargs="+", default=None, help="override final seeds (fresh-seed confirmation)")
+    ap.add_argument("--tag", default="", help="suffix for the output folder")
     ap.add_argument("--quick", action="store_true",
                     help="clinical quick run: scenario C1 only, 1 dev seed (101) for the periodic interval")
     a = ap.parse_args()
@@ -74,10 +78,13 @@ def main():
     choice = ROOT / "results" / "regime" / "tune_need_choice.json"
     if choice.exists():   # proposed_v2's one setting, chosen on dev seeds by src/tune_need.py
         cfg = deep_update(cfg, {"policy": {"need_ema": json.loads(choice.read_text())["need_ema"]}})
+    if a.seeds:
+        cfg = deep_update(cfg, {"seeds": a.seeds})
     fair = ROOT / "results" / "regime" / ("tune_fair_choice.json" if a.dataset == "synthetic" else "tune_fair_choice_clinical.json")
     if fair.exists():   # proposed_v3's fairness floor, chosen on dev data by src/tune_fair.py
         cfg = deep_update(cfg, {"policy": {"fair_k": json.loads(fair.read_text())["fair_k"]}})
-    out = ROOT / "results" / ("regime" if a.dataset == "synthetic" else "regime_clinical")
+    out = ROOT / "results" / ({"synthetic": "regime", "clinical": "regime_clinical",
+                               "semisynthetic": "regime_semisynthetic"}[a.dataset] + (f"_{a.tag}" if a.tag else ""))
     print(f"[regime] {a.dataset}: budgets {BUDGETS}, scenarios {SCENARIOS}, dev seeds {DEV_SEEDS}, methods {METHODS}",
           flush=True)
     # 1) dev-only choice of the periodic interval per budget

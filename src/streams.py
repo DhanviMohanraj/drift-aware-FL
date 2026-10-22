@@ -191,3 +191,75 @@ class ClinicalWorld:
             j = idx[s:s + size]
             out.append(Batch(self.p["X"]["calib"][j], self.p["y"]["calib"][j], self.p["ids"]["calib"][j]))
         return out
+
+
+class SemiSyntheticWorld(ClinicalWorld):
+    """Real UCI patients and features; outcomes drawn from a logistic risk model fitted on the warm-start pool.
+
+    - base model (w, b): sklearn LogisticRegression on warm-start X and real readmission labels (warm only).
+    - semi_concept drift: the 5 largest-|w| coefficients change sign ("strongest risk factors reverse"); the
+      intercept is re-solved on warm-start X so the overall outcome rate is unchanged.
+    - semi_rate drift: the intercept is re-solved so the outcome rate doubles; w unchanged.
+    - each record has ONE fixed uniform draw u (seeded by run seed and split), y = u < p, so outcomes are paired
+      across scenarios and methods: before a drift every scenario sees identical labels.
+    Drift parameters were fixed before any semi-synthetic run.
+    """
+    TOP_K = 5
+
+    def __init__(self, cfg, seed, scenario, prepared):
+        super().__init__(cfg, seed, scenario, prepared)
+        from sklearn.linear_model import LogisticRegression
+        Xw, yw = prepared["X"]["warm"], prepared["y"]["warm"]
+        lr = LogisticRegression(C=1.0, max_iter=3000).fit(Xw, yw)
+        self.w = lr.coef_[0].astype(np.float64)
+        self.b = float(lr.intercept_[0])
+        base_rate = float(_sigmoid(Xw @ self.w + self.b).mean())
+        top = np.argsort(-np.abs(self.w))[:self.TOP_K]
+        self.w_concept = self.w.copy()
+        self.w_concept[top] *= -1
+        self.b_concept = self._solve_b(Xw, self.w_concept, base_rate)
+        self.b_rate = self._solve_b(Xw, self.w, min(0.95, 2 * base_rate))
+        self.u = {s: rng_for(seed, STREAM_DATA, 4242, SPLIT_CODES[s]).random(len(prepared["y"][s]))
+                  for s in prepared["y"]}
+        names = prepared["feature_names"]
+        self.info.update({"semi_base_rate": base_rate, "semi_top_features": [names[i] for i in top],
+                          "semi_rate_after": min(0.95, 2 * base_rate)})
+
+    @staticmethod
+    def _solve_b(X, w, target):
+        lo, hi = -20.0, 20.0
+        for _ in range(60):
+            mid = (lo + hi) / 2
+            if _sigmoid(X @ w + mid).mean() < target:
+                lo = mid
+            else:
+                hi = mid
+        return (lo + hi) / 2
+
+    def _labels(self, x, split, idx, client, t):
+        w, b = self.w, self.b
+        if split in ("final", "dev"):
+            if is_active(self.scenario, "semi_concept", client, t):
+                w, b = self.w_concept, self.b_concept
+            elif is_active(self.scenario, "semi_rate", client, t):
+                b = self.b_rate
+        p = _sigmoid(x.astype(np.float64) @ w + b)
+        return (self.u[split][idx] < p).astype(np.float32)
+
+    def chunk(self, client, t, split="final"):
+        idx = self.p["chunks"][split][client][t]
+        x = self.p["X"][split][idx].copy()
+        return Batch(x, self._labels(x, split, idx, client, t), self.p["ids"][split][idx].copy())
+
+    def warm_data(self, client):
+        idx = self.p["client_idx"]["warm"][client]
+        x = self.p["X"]["warm"][idx]
+        return Batch(x, self._labels(x, "warm", idx, client, -1), self.p["ids"]["warm"][idx])
+
+    def calib_chunks(self, client):
+        out = []
+        pos = {sid: i for i, sid in enumerate(self.p["ids"]["calib"])}
+        for b in super().calib_chunks(client):
+            idx = np.array([pos[s] for s in b.sample_ids])
+            out.append(Batch(b.x, self._labels(b.x, "calib", idx, client, -1), b.sample_ids))
+        return out

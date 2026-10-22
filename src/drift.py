@@ -51,6 +51,17 @@ SCENARIOS: dict[str, Scenario] = {
                    _abrupt("prior", ALL, 40), {"pre": 0.3, "post": 0.6}),
     "S6": Scenario("S6", "synthetic", "Localized sudden concept shift: rotate 60 deg, clinic 1 only at t=40",
                    _abrupt("concept", (0,), 40), {"angle_deg": 60.0}),
+    # Semi-synthetic: real UCI patients and features, outcomes drawn from a logistic risk model fitted on the
+    # warm-start pool; drift changes that model at known times (see streams.SemiSyntheticWorld).
+    "SS0": Scenario("SS0", "semisynthetic", "Semi-synthetic, no drift"),
+    "SS2": Scenario("SS2", "semisynthetic", "Semi-synthetic concept shift: 5 strongest risk factors reverse, clinics 1-2 at t=40",
+                    _abrupt("semi_concept", (0, 1), 40)),
+    "SS3": Scenario("SS3", "semisynthetic", "Semi-synthetic staggered concept shift: clinics 1,2,3 at t=30,50,70",
+                    (Event(0, 30, 30, "semi_concept"), Event(1, 50, 50, "semi_concept"), Event(2, 70, 70, "semi_concept"))),
+    "SS5": Scenario("SS5", "semisynthetic", "Semi-synthetic outcome-rate shift: readmission rate doubles, all clinics at t=40",
+                    _abrupt("semi_rate", (0, 1, 2, 3), 40)),
+    "SS6": Scenario("SS6", "semisynthetic", "Semi-synthetic localized concept shift: clinic 1 only at t=40",
+                    _abrupt("semi_concept", (0,), 40)),
     "C0": Scenario("C0", "clinical", "Clinical stationary control (seeded order)"),
     "C1": Scenario("C1", "clinical", "Measurement shift +1 warm-start SD in num_lab_procedures, clinics 1-2 at t=40",
                    _abrupt("measurement", (0, 1), 40), {"shift": 1.0}),

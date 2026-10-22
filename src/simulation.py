@@ -27,7 +27,7 @@ from .federation import Deployment, FIFOBuffer, aggregate, warm_start
 from .metrics import Evaluator, detection_summary, recovery_summary
 from .model import get_state, make_model, mean_bce, payload_bytes, predict_proba, train_local
 from .policies import TokenBucket, UnlimitedBudget, make_policy
-from .streams import ClinicalWorld, Stream, SyntheticWorld
+from .streams import ClinicalWorld, SemiSyntheticWorld, Stream, SyntheticWorld
 from .utils import atomic_write_pickle, deep_update, sha256_array
 
 torch.set_num_threads(1)
@@ -37,7 +37,9 @@ class Simulation:
     def __init__(self, cfg: dict, dataset: str, scenario: str, method: str, seed: int,
                  split: str = "final", prepared: dict | None = None, trace: bool = False,
                  policy_seed: int | None = None, manifest_override: list[dict] | None = None):
-        cfg = deep_update(cfg, cfg.get("dataset_overrides", {}).get(dataset, {}))
+        ov = cfg.get("dataset_overrides", {})
+        # semi-synthetic runs on the clinical pools and uses the clinical overrides unless it has its own
+        cfg = deep_update(cfg, ov.get(dataset, ov.get("clinical", {}) if dataset == "semisynthetic" else {}))
         self.cfg, self.dataset, self.method, self.seed, self.split = cfg, dataset, method, seed, split
         self.sc = get_scenario(scenario)
         if self.sc.dataset != dataset:
@@ -50,7 +52,8 @@ class Simulation:
             if prepared is None:
                 from .preprocess import prepare_clinical
                 prepared = prepare_clinical(cfg, seed)
-            self.world = ClinicalWorld(cfg, seed, self.sc, prepared)
+            world_cls = SemiSyntheticWorld if dataset == "semisynthetic" else ClinicalWorld
+            self.world = world_cls(cfg, seed, self.sc, prepared)
             self.H = self.world.horizon
         self.stream = Stream(self.world, split)
         # evaluator-only event manifest (known_time is the single privileged policy)
