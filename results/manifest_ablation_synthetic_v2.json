@@ -1,0 +1,28 @@
+{
+  "complete": [
+    "synthetic-S3-proposed_nosev-b0.25-s11",
+    "synthetic-S3-proposed_nosev-b0.25-s22",
+    "synthetic-S3-proposed_nosev-b0.25-s33",
+    "synthetic-S3-proposed_nosev-b0.25-s44",
+    "synthetic-S3-proposed_nosev-b0.25-s55",
+    "synthetic-S3-proposed_nowait-b0.25-s11",
+    "synthetic-S3-proposed_nowait-b0.25-s22",
+    "synthetic-S3-proposed_nowait-b0.25-s33",
+    "synthetic-S3-proposed_nowait-b0.25-s44",
+    "synthetic-S3-proposed_nowait-b0.25-s55"
+  ],
+  "expected": [
+    "synthetic-S3-proposed_nosev-b0.25-s11",
+    "synthetic-S3-proposed_nosev-b0.25-s22",
+    "synthetic-S3-proposed_nosev-b0.25-s33",
+    "synthetic-S3-proposed_nosev-b0.25-s44",
+    "synthetic-S3-proposed_nosev-b0.25-s55",
+    "synthetic-S3-proposed_nowait-b0.25-s11",
+    "synthetic-S3-proposed_nowait-b0.25-s22",
+    "synthetic-S3-proposed_nowait-b0.25-s33",
+    "synthetic-S3-proposed_nowait-b0.25-s44",
+    "synthetic-S3-proposed_nowait-b0.25-s55"
+  ],
+  "runs_dir": "results/runs_v2",
+  "tier": "ablation_synthetic_v2"
+}

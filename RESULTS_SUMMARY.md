@@ -75,3 +75,33 @@ Post-change pooled log loss, mean of 5 seeds; pooled AUROC 0.55–0.58 for every
 - Milder clinic heterogeneity (e.g. Dirichlet α ≥ 1, or allocation by a feature) — this changes the plan's
   protocol, so agree it with the supervisor.
 - More service credits per alarm (also needed for the synthetic priority question).
+
+---
+
+# v2 synthetic results (configs/v2.yaml, 22 Oct 2026)
+
+220/220 runs complete (full S0–S5 × 6 methods × 5 seeds, S3 ablation, S3 budget sweep), 0 failures.
+Only change vs earlier synthetic runs: 6 service credits per alarm (chosen on 4 dev seeds).
+Tables: `results/synthetic_v2/tables/results.md`; figures: `results/synthetic_v2/figures/`.
+
+Post-change pooled log loss at b = 0.25 (mean of 5 seeds; lower is better):
+
+| Scenario | periodic | drift-only | proposed | proposed − periodic (seeds proposed better) |
+|---|---|---|---|---|
+| S0 no drift | **0.417** | 0.432 | 0.432 | +0.015 (0/5) |
+| S1 covariate | **0.405** | 0.421 | 0.421 | +0.015 (0/5) |
+| S2 concept, 2 clinics | **0.486** | 0.488 | 0.489 | +0.002 (2/5) |
+| S3 staggered concept | 0.481 | **0.475** | **0.475** | −0.006 (3/5) |
+| S4 gradual | **0.468** | 0.478 | 0.479 | +0.011 (0/5) |
+| S5 prior shift | 0.488 | 0.486 | **0.486** | −0.002 (4/5) |
+
+- **Drift-triggered retraining now competes with periodic** and wins under staggered/local drift (S3, S5),
+  while spending ~45% fewer adaptation bytes (2.3 MB vs 4.15 MB). It loses when there is no drift, covariate
+  drift, or gradual drift.
+- **Worst-clinic loss is clearly better** for drift-triggered methods under concept/prior drift
+  (S3: 0.536 vs 0.577; S2: 0.542 vs 0.582; S5: 0.527 vs 0.558).
+- **S3 budget sweep:** drift-triggered beats periodic at every budget (b = 0.10: 0.491 vs 0.511;
+  b = 0.50: 0.473 vs 0.476) and at b = 0.50 uses 3.2 MB vs 8.3 MB.
+- **The proposed priority rule still adds nothing measurable:** proposed − drift-only is within ±0.001 everywhere;
+  the ablations (no severity 0.4753, no waiting 0.4737) are no worse than the full rule (0.4754).
+- Five seeds: descriptive only. Clinical v2: running in Colab.

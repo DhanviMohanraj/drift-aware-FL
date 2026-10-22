@@ -1,0 +1,11 @@
+run_id,dataset,scenario,method,seed,b,status
+synthetic-S3-proposed_nosev-b0.25-s11,synthetic,S3,proposed_nosev,11,0.25,complete
+synthetic-S3-proposed_nosev-b0.25-s22,synthetic,S3,proposed_nosev,22,0.25,complete
+synthetic-S3-proposed_nosev-b0.25-s33,synthetic,S3,proposed_nosev,33,0.25,complete
+synthetic-S3-proposed_nosev-b0.25-s44,synthetic,S3,proposed_nosev,44,0.25,complete
+synthetic-S3-proposed_nosev-b0.25-s55,synthetic,S3,proposed_nosev,55,0.25,complete
+synthetic-S3-proposed_nowait-b0.25-s11,synthetic,S3,proposed_nowait,11,0.25,complete
+synthetic-S3-proposed_nowait-b0.25-s22,synthetic,S3,proposed_nowait,22,0.25,complete
+synthetic-S3-proposed_nowait-b0.25-s33,synthetic,S3,proposed_nowait,33,0.25,complete
+synthetic-S3-proposed_nowait-b0.25-s44,synthetic,S3,proposed_nowait,44,0.25,complete
+synthetic-S3-proposed_nowait-b0.25-s55,synthetic,S3,proposed_nowait,55,0.25,complete
