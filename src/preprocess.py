@@ -131,10 +131,19 @@ def prepare_clinical(cfg: dict, seed: int, df: pd.DataFrame | None = None, cache
     df = df.iloc[g.permutation(len(df))].drop_duplicates("patient_nbr", keep="first").reset_index(drop=True)
     df["_sid"] = df["encounter_id"].astype(np.int64)
     patients = np.array(sorted(df["patient_nbr"].unique()))
-    patients = patients[rng_for(seed, STREAM_SPLIT, 2).permutation(len(patients))]
     n = len(patients)
     a, b = int(c["pools"][0] * n), int((c["pools"][0] + c["pools"][1]) * n)
-    dev_p, warm_all_p, final_p = patients[:a], patients[a:b], patients[b:]
+    if c.get("fixed_dev_pool", False):
+        # Development patients are chosen ONCE (dev_pool_seed), identical for every run seed, and are
+        # never in any seed's warm-start or final pool. Each run seed shuffles only the remainder.
+        fixed = patients[rng_for(int(c.get("dev_pool_seed", 2026)), STREAM_SPLIT, 2).permutation(n)]
+        dev_p = fixed[:a]
+        rest = np.array(sorted(fixed[a:].tolist()))
+        rest = rest[rng_for(seed, STREAM_SPLIT, 2).permutation(len(rest))]
+        warm_all_p, final_p = rest[:b - a], rest[b - a:]
+    else:   # v1 behaviour: every seed draws its own development pool
+        patients = patients[rng_for(seed, STREAM_SPLIT, 2).permutation(n)]
+        dev_p, warm_all_p, final_p = patients[:a], patients[a:b], patients[b:]
     ncal = int(c["calib_frac"] * len(warm_all_p))
     calib_p, warm_p = warm_all_p[:ncal], warm_all_p[ncal:]
     pools = {}

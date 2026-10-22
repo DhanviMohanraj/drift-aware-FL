@@ -111,3 +111,22 @@ def test_configurable_multi_feature_shift(prepared, cfg):
     import pytest
     with pytest.raises(ValueError):
         ClinicalWorld(deep_update(cfg, {"clinical": {"shift_features": ["race"]}}), 11, get_scenario("C1"), prepared)
+
+
+def test_fixed_dev_pool_disjoint_across_seeds(cfg):
+    """With fixed_dev_pool, dev patients are identical for every seed and never in any seed's warm/final pool."""
+    from src.utils import deep_update
+    c = deep_update(cfg, {"clinical": {"fixed_dev_pool": True, "dev_pool_seed": 2026}})
+    df = make_fixture(6000, seed=3)
+    preps = [prepare_clinical(c, s, df=df, cache=False) for s in (11, 22, 101)]
+    dev = [set(p["patients"]["dev"].tolist()) for p in preps]
+    assert dev[0] == dev[1] == dev[2]
+    used = set()
+    for p in preps:
+        for pool in ("warm", "calib", "final"):
+            used |= set(p["patients"][pool].tolist())
+    assert not dev[0] & used
+    assert set(preps[0]["patients"]["final"].tolist()) != set(preps[1]["patients"]["final"].tolist())
+    for p in preps:   # pool sizes unchanged vs the default split
+        n = sum(len(v) for v in p["patients"].values())
+        assert abs(len(p["patients"]["dev"]) - 0.2 * n) <= 1

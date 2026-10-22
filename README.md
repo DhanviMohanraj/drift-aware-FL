@@ -118,3 +118,12 @@ never made the budget bind. `src/sweep_dev.py` chooses replacements **on develop
 Synthetic stage B result (dev seeds 101, 102; `results/sweep_dev_synthetic.json`): only **credits = 10** makes
 the priority rule change decisions (3.9% at b = 0.25) while the budget binds (85% spent). Clinical sweep: run in
 Colab (notebook cells 13–15).
+
+### Fixed development pool (leakage fix for v2)
+With `clinical.fixed_dev_pool: true` the development patients (20%) are chosen once with
+`clinical.dev_pool_seed` (2026) and are identical for every run seed; each run seed shuffles only the
+remaining 80% into warm-start and final pools. Development patients therefore never appear in any seed's
+warm-start or final stream (`tests/test_data_leakage.py::test_fixed_dev_pool_disjoint_across_seeds`).
+Without it (the early configuration), each seed drew its own development pool, so patients used to choose
+settings under dev seeds 101-104 could appear in the final streams of seeds 11-55. `src/sweep_dev.py` always
+uses the fixed pool. Synthetic data is unaffected (development data are separate random draws).

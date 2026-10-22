@@ -50,8 +50,11 @@ _PREP: dict = {}                # (alpha, seed) -> prepared clinical arrays; sha
 
 
 # ----------------------------------------------------------------------------- helpers
-def base_cfg(config_path):
+def base_cfg(config_path, fixed_dev_pool=True):
     cfg = load_config(config_path)
+    if fixed_dev_pool:   # dev patients identical across seeds and disjoint from every seed's final stream
+        cfg = deep_update(cfg, {"clinical": {"fixed_dev_pool": True,
+                                             "dev_pool_seed": cfg["clinical"].get("dev_pool_seed", 2026)}})
     return cfg
 
 
