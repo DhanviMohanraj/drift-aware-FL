@@ -1,0 +1,1293 @@
+{
+  "config": "configs/core.yaml",
+  "dataset": "clinical",
+  "dev_seeds": [
+    101,
+    102
+  ],
+  "rules": {
+    "DIFF_TARGET": 0.02,
+    "FA_TARGET": 1.0,
+    "SKEW_LIMIT": 3.0,
+    "UTIL_TARGET": 0.5
+  },
+  "stage_a": {
+    "choice": {
+      "alpha": 5.0,
+      "drift": "lab_med_3sd",
+      "features": [
+        "num_lab_procedures",
+        "num_medications",
+        "time_in_hospital"
+      ],
+      "magnitude": 3.0,
+      "threshold": 12.0
+    },
+    "raw": [
+      {
+        "alpha": 0.5,
+        "dev_client_prevalence": [
+          0.04783505201339722,
+          0.03259911760687828,
+          0.0011645962949842215,
+          0.1875
+        ],
+        "dev_client_sizes": [
+          4850,
+          3405,
+          2576,
+          3472
+        ],
+        "dev_max_skew": 2.6898820883661196,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "v1_lab_1sd",
+        "effect_z": [
+          0.45761423800572765,
+          1.2231175637391314,
+          -1.2080714462006745,
+          -0.513387996389442,
+          0.2567589823156595
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 0.0
+          },
+          "3.0": {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.14366988837718964,
+          0.11924921721220016,
+          0.027589179575443268,
+          0.8267317414283752
+        ]
+      },
+      {
+        "alpha": 0.5,
+        "dev_client_prevalence": [
+          0.22971948981285095,
+          0.0010773282265290618,
+          0.15510204434394836,
+          0.02090592309832573
+        ],
+        "dev_client_sizes": [
+          2638,
+          8354,
+          2450,
+          861
+        ],
+        "dev_max_skew": 3.243512197769864,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "v1_lab_1sd",
+        "effect_z": [
+          -0.2543003114704306,
+          0.31926417723298073,
+          0.3919899097043199,
+          -0.25161445233970886,
+          1.4248500452193569
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 0.25
+          },
+          "3.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              13
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          }
+        },
+        "warm_loss_per_clinic": [
+          3.0082995891571045,
+          0.025255784392356873,
+          2.0461714267730713,
+          0.2942553460597992
+        ]
+      },
+      {
+        "alpha": 0.5,
+        "dev_client_prevalence": [
+          0.04783505201339722,
+          0.03259911760687828,
+          0.0011645962949842215,
+          0.1875
+        ],
+        "dev_client_sizes": [
+          4850,
+          3405,
+          2576,
+          3472
+        ],
+        "dev_max_skew": 2.6898820883661196,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "lab_med_3sd",
+        "effect_z": [
+          1.1343283240450843,
+          1.855892983005846,
+          -0.7389621204182227,
+          -0.14875970192539148,
+          -0.08265102794393901
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.0
+          },
+          "3.0": {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.14366988837718964,
+          0.11924921721220016,
+          0.027589179575443268,
+          0.8267317414283752
+        ]
+      },
+      {
+        "alpha": 0.5,
+        "dev_client_prevalence": [
+          0.22971948981285095,
+          0.0010773282265290618,
+          0.15510204434394836,
+          0.02090592309832573
+        ],
+        "dev_client_sizes": [
+          2638,
+          8354,
+          2450,
+          861
+        ],
+        "dev_max_skew": 3.243512197769864,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "lab_med_3sd",
+        "effect_z": [
+          -0.32931162452505697,
+          0.1285604313015938,
+          0.2951516671209191,
+          -0.3692047400400043,
+          1.3590324510105127
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 0.25
+          },
+          "3.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              13
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          }
+        },
+        "warm_loss_per_clinic": [
+          3.0082995891571045,
+          0.025255784392356873,
+          2.0461714267730713,
+          0.2942553460597992
+        ]
+      },
+      {
+        "alpha": 0.5,
+        "dev_client_prevalence": [
+          0.04783505201339722,
+          0.03259911760687828,
+          0.0011645962949842215,
+          0.1875
+        ],
+        "dev_client_sizes": [
+          4850,
+          3405,
+          2576,
+          3472
+        ],
+        "dev_max_skew": 2.6898820883661196,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "utilisation_3sd",
+        "effect_z": [
+          1.351833164555773,
+          1.6073207536835767,
+          -0.9059992788524288,
+          -0.17295803090670925,
+          0.3556542843580245
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.0
+          },
+          "3.0": {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.14366988837718964,
+          0.11924921721220016,
+          0.027589179575443268,
+          0.8267317414283752
+        ]
+      },
+      {
+        "alpha": 0.5,
+        "dev_client_prevalence": [
+          0.22971948981285095,
+          0.0010773282265290618,
+          0.15510204434394836,
+          0.02090592309832573
+        ],
+        "dev_client_sizes": [
+          2638,
+          8354,
+          2450,
+          861
+        ],
+        "dev_max_skew": 3.243512197769864,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "utilisation_3sd",
+        "effect_z": [
+          1.4498735493237038,
+          -0.10540753497480182,
+          2.03102283639057,
+          -0.8096979285764974,
+          2.7547843165246015
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              8
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.25
+          },
+          "3.0": {
+            "delays": [
+              7
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              6,
+              6,
+              4
+            ],
+            "detected": 3,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          }
+        },
+        "warm_loss_per_clinic": [
+          3.0082995891571045,
+          0.025255784392356873,
+          2.0461714267730713,
+          0.2942553460597992
+        ]
+      },
+      {
+        "alpha": 1.0,
+        "dev_client_prevalence": [
+          0.06784661114215851,
+          0.06862581521272659,
+          0.06277371942996979,
+          0.07570770382881165
+        ],
+        "dev_client_sizes": [
+          1017,
+          5989,
+          2740,
+          4557
+        ],
+        "dev_max_skew": 1.0861055812290537,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "v1_lab_1sd",
+        "effect_z": [
+          -0.7326241396861876,
+          -0.7263273189686466,
+          1.231291575849401,
+          -0.7067521773479025,
+          -0.0900592123612998
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              8
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.0
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.3823936879634857,
+          0.14914414286613464,
+          0.23081140220165253,
+          0.21628010272979736
+        ]
+      },
+      {
+        "alpha": 1.0,
+        "dev_client_prevalence": [
+          0.0062032476998865604,
+          0.2369038313627243,
+          0.22642412781715393,
+          0.037220388650894165
+        ],
+        "dev_client_sizes": [
+          5481,
+          1279,
+          2089,
+          5454
+        ],
+        "dev_max_skew": 3.3449511286544102,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "v1_lab_1sd",
+        "effect_z": [
+          -1.0823861658573148,
+          2.1008412902002704,
+          0.6662762090563775,
+          -0.20902046194170004,
+          -0.417970118160743
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [
+              8
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              3
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.75
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.07193426787853241,
+          1.240557312965393,
+          1.1628284454345703,
+          0.130186066031456
+        ]
+      },
+      {
+        "alpha": 1.0,
+        "dev_client_prevalence": [
+          0.06784661114215851,
+          0.06862581521272659,
+          0.06277371942996979,
+          0.07570770382881165
+        ],
+        "dev_client_sizes": [
+          1017,
+          5989,
+          2740,
+          4557
+        ],
+        "dev_max_skew": 1.0861055812290537,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "lab_med_3sd",
+        "effect_z": [
+          -0.37037175268724554,
+          0.9093737676081832,
+          2.0635411545571682,
+          0.525767091169733,
+          0.8433101840852018
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              8
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [
+              7
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              7
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.0
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.3823936879634857,
+          0.14914414286613464,
+          0.23081140220165253,
+          0.21628010272979736
+        ]
+      },
+      {
+        "alpha": 1.0,
+        "dev_client_prevalence": [
+          0.0062032476998865604,
+          0.2369038313627243,
+          0.22642412781715393,
+          0.037220388650894165
+        ],
+        "dev_client_sizes": [
+          5481,
+          1279,
+          2089,
+          5454
+        ],
+        "dev_max_skew": 3.3449511286544102,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "lab_med_3sd",
+        "effect_z": [
+          -1.942370251752436,
+          5.151489661485697,
+          0.4575928393751383,
+          1.7168880701888167,
+          0.7221872154681441
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              2,
+              8
+            ],
+            "detected": 2,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [
+              1,
+              7
+            ],
+            "detected": 2,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              1,
+              11
+            ],
+            "detected": 2,
+            "events": 5,
+            "fa_per_100_null": 0.75
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.07193426787853241,
+          1.240557312965393,
+          1.1628284454345703,
+          0.130186066031456
+        ]
+      },
+      {
+        "alpha": 1.0,
+        "dev_client_prevalence": [
+          0.06784661114215851,
+          0.06862581521272659,
+          0.06277371942996979,
+          0.07570770382881165
+        ],
+        "dev_client_sizes": [
+          1017,
+          5989,
+          2740,
+          4557
+        ],
+        "dev_max_skew": 1.0861055812290537,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "utilisation_3sd",
+        "effect_z": [
+          -0.474810524556913,
+          -0.01989634306241416,
+          1.5590657949329387,
+          -0.15434160878487532,
+          0.5007524928931134
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              12
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [
+              8
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          },
+          "6.0": {
+            "delays": [
+              8
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.0
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.3823936879634857,
+          0.14914414286613464,
+          0.23081140220165253,
+          0.21628010272979736
+        ]
+      },
+      {
+        "alpha": 1.0,
+        "dev_client_prevalence": [
+          0.0062032476998865604,
+          0.2369038313627243,
+          0.22642412781715393,
+          0.037220388650894165
+        ],
+        "dev_client_sizes": [
+          5481,
+          1279,
+          2089,
+          5454
+        ],
+        "dev_max_skew": 3.3449511286544102,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "utilisation_3sd",
+        "effect_z": [
+          5.115554943680762,
+          1.5862606131241705,
+          8.807077080011366,
+          -0.4573041092777822,
+          -0.20994990945455874
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              1,
+              2
+            ],
+            "detected": 2,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [
+              0,
+              1
+            ],
+            "detected": 2,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              0,
+              1
+            ],
+            "detected": 2,
+            "events": 5,
+            "fa_per_100_null": 0.75
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.07193426787853241,
+          1.240557312965393,
+          1.1628284454345703,
+          0.130186066031456
+        ]
+      },
+      {
+        "alpha": 5.0,
+        "dev_client_prevalence": [
+          0.1425076425075531,
+          0.1420118361711502,
+          0.027868537232279778,
+          0.04227899760007858
+        ],
+        "dev_client_sizes": [
+          1635,
+          3042,
+          5203,
+          4423
+        ],
+        "dev_max_skew": 2.04442002686053,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "v1_lab_1sd",
+        "effect_z": [
+          -1.1751982880091827,
+          2.9471968387683463,
+          -0.7958326504555733,
+          -3.3708795326951573,
+          -1.2504555464226204
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.5939776301383972,
+          0.5196191668510437,
+          0.10271871089935303,
+          0.14888152480125427
+        ]
+      },
+      {
+        "alpha": 5.0,
+        "dev_client_prevalence": [
+          0.06741898506879807,
+          0.11511479318141937,
+          0.06214689090847969,
+          0.04277902841567993
+        ],
+        "dev_client_sizes": [
+          3456,
+          3136,
+          4602,
+          3109
+        ],
+        "dev_max_skew": 1.6253572395266633,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "v1_lab_1sd",
+        "effect_z": [
+          -0.11776371584351601,
+          0.45045694714472606,
+          0.7817276928929863,
+          -0.17581629457050704,
+          -0.37018024448470854
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 0.25
+          },
+          "3.0": {
+            "delays": [],
+            "detected": 0,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              1
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.0
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.22238780558109283,
+          0.3566344380378723,
+          0.19187282025814056,
+          0.15724633634090424
+        ]
+      },
+      {
+        "alpha": 5.0,
+        "dev_client_prevalence": [
+          0.1425076425075531,
+          0.1420118361711502,
+          0.027868537232279778,
+          0.04227899760007858
+        ],
+        "dev_client_sizes": [
+          1635,
+          3042,
+          5203,
+          4423
+        ],
+        "dev_max_skew": 2.04442002686053,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "lab_med_3sd",
+        "effect_z": [
+          -0.12642971517797283,
+          5.886000256017982,
+          0.8667285626204594,
+          -1.7410156713669516,
+          -0.8926053614296854
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              2,
+              5
+            ],
+            "detected": 2,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.5939776301383972,
+          0.5196191668510437,
+          0.10271871089935303,
+          0.14888152480125427
+        ]
+      },
+      {
+        "alpha": 5.0,
+        "dev_client_prevalence": [
+          0.06741898506879807,
+          0.11511479318141937,
+          0.06214689090847969,
+          0.04277902841567993
+        ],
+        "dev_client_sizes": [
+          3456,
+          3136,
+          4602,
+          3109
+        ],
+        "dev_max_skew": 1.6253572395266633,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "lab_med_3sd",
+        "effect_z": [
+          0.8653121544294762,
+          2.0697186354432326,
+          2.1791129967158667,
+          1.5436911517536989,
+          0.7518999118772665
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              10,
+              1,
+              7,
+              2,
+              13
+            ],
+            "detected": 5,
+            "events": 5,
+            "fa_per_100_null": 0.25
+          },
+          "3.0": {
+            "delays": [
+              3,
+              1,
+              0,
+              1,
+              13
+            ],
+            "detected": 5,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              1
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.0
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.22238780558109283,
+          0.3566344380378723,
+          0.19187282025814056,
+          0.15724633634090424
+        ]
+      },
+      {
+        "alpha": 5.0,
+        "dev_client_prevalence": [
+          0.1425076425075531,
+          0.1420118361711502,
+          0.027868537232279778,
+          0.04227899760007858
+        ],
+        "dev_client_sizes": [
+          1635,
+          3042,
+          5203,
+          4423
+        ],
+        "dev_max_skew": 2.04442002686053,
+        "dev_prevalence": 0.06970565766096115,
+        "drift": "utilisation_3sd",
+        "effect_z": [
+          -0.5761353439225811,
+          4.392530738283651,
+          0.28898779706389083,
+          -2.2894572555991104,
+          -0.3684886976268425
+        ],
+        "seed": 101,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              2,
+              5
+            ],
+            "detected": 2,
+            "events": 5,
+            "fa_per_100_null": 0.5
+          },
+          "3.0": {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.25
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.5939776301383972,
+          0.5196191668510437,
+          0.10271871089935303,
+          0.14888152480125427
+        ]
+      },
+      {
+        "alpha": 5.0,
+        "dev_client_prevalence": [
+          0.06741898506879807,
+          0.11511479318141937,
+          0.06214689090847969,
+          0.04277902841567993
+        ],
+        "dev_client_sizes": [
+          3456,
+          3136,
+          4602,
+          3109
+        ],
+        "dev_max_skew": 1.6253572395266633,
+        "dev_prevalence": 0.07082430273294449,
+        "drift": "utilisation_3sd",
+        "effect_z": [
+          0.32210715415998603,
+          0.20230522822738428,
+          1.1730948360790023,
+          -0.04361191537313933,
+          1.5968905851649844
+        ],
+        "seed": 102,
+        "thresholds": {
+          "12.0": {
+            "delays": [
+              13
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 0.25
+          },
+          "3.0": {
+            "delays": [
+              7
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.5
+          },
+          "6.0": {
+            "delays": [
+              12
+            ],
+            "detected": 1,
+            "events": 5,
+            "fa_per_100_null": 1.0
+          }
+        },
+        "warm_loss_per_clinic": [
+          0.22238780558109283,
+          0.3566344380378723,
+          0.19187282025814056,
+          0.15724633634090424
+        ]
+      }
+    ],
+    "table": [
+      {
+        "alpha": 5.0,
+        "balanced": true,
+        "detection_rate": 0.7,
+        "drift": "lab_med_3sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.375,
+        "max_clinic_skew": 1.8348886331935965,
+        "mean_delay": 5.714285714285714,
+        "mean_effect_z": 1.1402412920883371,
+        "plan_distance": 3,
+        "threshold": 12.0,
+        "worst_warm_loss": 0.47530603408813477
+      },
+      {
+        "alpha": 0.5,
+        "balanced": true,
+        "detection_rate": 0.4,
+        "drift": "utilisation_3sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.5,
+        "max_clinic_skew": 2.966697143067992,
+        "mean_delay": 4.0,
+        "mean_effect_z": 0.7556426131525813,
+        "plan_distance": 2,
+        "threshold": 6.0,
+        "worst_warm_loss": 1.9175156652927399
+      },
+      {
+        "alpha": 1.0,
+        "balanced": true,
+        "detection_rate": 0.3,
+        "drift": "lab_med_3sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.5,
+        "max_clinic_skew": 2.215528354941732,
+        "mean_delay": 6.0,
+        "mean_effect_z": 1.00774079794984,
+        "plan_distance": 2,
+        "threshold": 12.0,
+        "worst_warm_loss": 0.8114755004644394
+      },
+      {
+        "alpha": 1.0,
+        "balanced": true,
+        "detection_rate": 0.3,
+        "drift": "utilisation_3sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.875,
+        "max_clinic_skew": 2.215528354941732,
+        "mean_delay": 3.0,
+        "mean_effect_z": 1.625240842950581,
+        "plan_distance": 3,
+        "threshold": 6.0,
+        "worst_warm_loss": 0.8114755004644394
+      },
+      {
+        "alpha": 5.0,
+        "balanced": true,
+        "detection_rate": 0.3,
+        "drift": "utilisation_3sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.375,
+        "max_clinic_skew": 1.8348886331935965,
+        "mean_delay": 6.666666666666667,
+        "mean_effect_z": 0.46982231264572255,
+        "plan_distance": 4,
+        "threshold": 12.0,
+        "worst_warm_loss": 0.47530603408813477
+      },
+      {
+        "alpha": 0.5,
+        "balanced": true,
+        "detection_rate": 0.2,
+        "drift": "v1_lab_1sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.5,
+        "max_clinic_skew": 2.966697143067992,
+        "mean_delay": 6.5,
+        "mean_effect_z": 0.18462207098169203,
+        "plan_distance": 0,
+        "threshold": 6.0,
+        "worst_warm_loss": 1.9175156652927399
+      },
+      {
+        "alpha": 1.0,
+        "balanced": true,
+        "detection_rate": 0.2,
+        "drift": "v1_lab_1sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.875,
+        "max_clinic_skew": 2.215528354941732,
+        "mean_delay": 5.5,
+        "mean_effect_z": 0.0033269480782254666,
+        "plan_distance": 1,
+        "threshold": 6.0,
+        "worst_warm_loss": 0.8114755004644394
+      },
+      {
+        "alpha": 0.5,
+        "balanced": true,
+        "detection_rate": 0.2,
+        "drift": "lab_med_3sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.5,
+        "max_clinic_skew": 2.966697143067992,
+        "mean_delay": 6.5,
+        "mean_effect_z": 0.3104076641631342,
+        "plan_distance": 1,
+        "threshold": 6.0,
+        "worst_warm_loss": 1.9175156652927399
+      },
+      {
+        "alpha": 5.0,
+        "balanced": true,
+        "detection_rate": 0.1,
+        "drift": "v1_lab_1sd",
+        "fa_ok": true,
+        "fa_per_100_null": 0.375,
+        "max_clinic_skew": 1.8348886331935965,
+        "mean_delay": 2.0,
+        "mean_effect_z": -0.3076744793675206,
+        "plan_distance": 2,
+        "threshold": 12.0,
+        "worst_warm_loss": 0.47530603408813477
+      }
+    ]
+  },
+  "stage_b": {
+    "choice": {
+      "b": 0.25,
+      "budget_binds": true,
+      "credits": 10,
+      "priority_matters": true
+    },
+    "table": [
+      {
+        "b": 0.25,
+        "budget_binds": true,
+        "credits": 10,
+        "decision_difference": 0.04625,
+        "dev_logloss_drift_only": 0.3070007969629973,
+        "dev_logloss_periodic": 0.29557970943566286,
+        "dev_logloss_proposed": 0.3006939761400435,
+        "plan_distance": 2,
+        "priority_matters": true,
+        "proposed_expired": 0.0,
+        "proposed_trainings": 31.25,
+        "proposed_utilisation": 0.611655040422838
+      },
+      {
+        "b": 0.1,
+        "budget_binds": true,
+        "credits": 6,
+        "decision_difference": 0.011875,
+        "dev_logloss_drift_only": 0.3211664307664891,
+        "dev_logloss_periodic": 0.3192283017475893,
+        "dev_logloss_proposed": 0.33171956746994247,
+        "plan_distance": 2,
+        "priority_matters": false,
+        "proposed_expired": 0.75,
+        "proposed_trainings": 14.25,
+        "proposed_utilisation": 0.7041531427973015
+      },
+      {
+        "b": 0.1,
+        "budget_binds": true,
+        "credits": 10,
+        "decision_difference": 0.015625,
+        "dev_logloss_drift_only": 0.3221345285684151,
+        "dev_logloss_periodic": 0.3192283017475893,
+        "dev_logloss_proposed": 0.31818876787485545,
+        "plan_distance": 3,
+        "priority_matters": false,
+        "proposed_expired": 1.25,
+        "proposed_trainings": 16.25,
+        "proposed_utilisation": 0.8041511995511141
+      },
+      {
+        "b": 0.25,
+        "budget_binds": false,
+        "credits": 3,
+        "decision_difference": 0.0,
+        "dev_logloss_drift_only": 0.3362233006470233,
+        "dev_logloss_periodic": 0.29557970943566286,
+        "dev_logloss_proposed": 0.3362233006470233,
+        "plan_distance": 0,
+        "priority_matters": false,
+        "proposed_expired": 0.0,
+        "proposed_trainings": 9.75,
+        "proposed_utilisation": 0.194996211757467
+      },
+      {
+        "b": 0.25,
+        "budget_binds": false,
+        "credits": 6,
+        "decision_difference": 0.0075,
+        "dev_logloss_drift_only": 0.3086150629869753,
+        "dev_logloss_periodic": 0.29557970943566286,
+        "dev_logloss_proposed": 0.30685212238969567,
+        "plan_distance": 1,
+        "priority_matters": false,
+        "proposed_expired": 0.0,
+        "proposed_trainings": 19.5,
+        "proposed_utilisation": 0.37665960741388876
+      },
+      {
+        "b": 0.1,
+        "budget_binds": false,
+        "credits": 3,
+        "decision_difference": 0.0,
+        "dev_logloss_drift_only": 0.33335616399836177,
+        "dev_logloss_periodic": 0.3192283017475893,
+        "dev_logloss_proposed": 0.33335616399836177,
+        "plan_distance": 1,
+        "priority_matters": false,
+        "proposed_expired": 0.0,
+        "proposed_trainings": 9.75,
+        "proposed_utilisation": 0.48749052939366755
+      }
+    ]
+  }
+}
