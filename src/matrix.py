@@ -63,6 +63,7 @@ def main():
     ap.add_argument("--workers", type=int, default=1)
     ap.add_argument("--out", default=str(ROOT / "results" / "runs"))
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--tag", default="", help="suffix for manifest/status files, e.g. v2 (keeps v1 files intact)")
     a = ap.parse_args()
     cfg = load_config(a.config)
     specs = tier_specs(a.tier, cfg)
@@ -71,7 +72,7 @@ def main():
     for s in specs:
         s["run_id"] = run_id_for(s["dataset"], s["scenario"], s["method"], s["seed"], s["b"])
     out = Path(a.out)
-    tag = a.tier + (f"_{a.only_dataset}" if a.only_dataset else "")
+    tag = a.tier + (f"_{a.only_dataset}" if a.only_dataset else "") + (f"_{a.tag}" if a.tag else "")
     manifest_path = ROOT / "results" / f"manifest_{tag}.json"
 
     def status_of(rid):

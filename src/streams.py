@@ -151,18 +151,33 @@ class ClinicalWorld:
         self.p = prepared
         self.num_clients = cfg["num_clients"]
         self.horizon = prepared["horizon"]
-        self.shift_col = prepared["shift_col_index"]
+        c = cfg["clinical"]
+        feats = c.get("shift_features") or [prepared["shift_feature"]]
+        numeric = prepared["audit"]["numeric"]
+        bad = [f for f in feats if f not in numeric]
+        if bad:
+            raise ValueError(f"shift_features must be numeric columns {numeric}; got {bad}")
+        self.shift_features = list(feats)
+        self.shift_cols = [prepared["feature_names"].index(f) for f in feats]
+        # magnitude in warm-start SD units (features are standardized); default = scenario value (+1 SD)
+        self.shift_magnitude = c.get("shift_magnitude")
         self.info = {"chunk_sizes": {s: [[len(ch) for ch in cl] for cl in prepared["chunks"][s]]
                                       for s in prepared["chunks"]},
-                     "horizon": self.horizon, "shift_feature": prepared["shift_feature"]}
+                     "horizon": self.horizon, "shift_features": self.shift_features,
+                     "shift_magnitude": self._magnitude()}
 
     def chunk(self, client: int, t: int, split: str = "final") -> Batch:
         idx = self.p["chunks"][split][client][t]
         X, y, ids = self.p["X"][split], self.p["y"][split], self.p["ids"][split]
         x = X[idx].copy()
         if split in ("final", "dev") and is_active(self.scenario, "measurement", client, t):
-            x[:, self.shift_col] += self.scenario.params["shift"]  # standardized space: +1 warm SD
+            x[:, self.shift_cols] += self._magnitude()   # standardized space: warm-start SD units
         return Batch(x, y[idx].copy(), ids[idx].copy())
+
+    def _magnitude(self) -> float:
+        if self.shift_magnitude is not None:
+            return float(self.shift_magnitude)
+        return float(self.scenario.params.get("shift", 0.0))
 
     def warm_data(self, client: int) -> Batch:
         idx = self.p["client_idx"]["warm"][client]

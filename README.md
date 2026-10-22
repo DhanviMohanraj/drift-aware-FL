@@ -96,3 +96,25 @@ never changes a decision (identical to drift-only) because the budget is not bin
 - No published comparator reproduced; the drift-only control is internal, not FedConD/FedDrift.
 - Immediate labels; delayed-label sensitivity not implemented.
 - Data citation/licence in `src/data.py` must be re-checked on the UCI page before release.
+
+## v2 protocol (in progress) — development-only sweep
+
+v1 clinical results showed the injected drift (+1 SD on one feature) did not change the task, the detector
+missed every event, Dirichlet(0.5) produced one positive-dominated clinic per seed, and 3 credits per alarm
+never made the budget bind. `src/sweep_dev.py` chooses replacements **on development data only**:
+
+- Stage A (clinical): `dirichlet_alpha` in {0.5, 1, 5} x drift option {v1 +1 SD on num_lab_procedures;
+  +3 SD on num_lab_procedures, num_medications, time_in_hospital; +3 SD on number_inpatient, number_emergency,
+  number_diagnoses} x threshold {3, 6, 12}. Rule: false alarms <= 1/100 client-steps, no clinic above 3x pooled
+  prevalence, highest detection, then the smallest change from the plan.
+- Stage B (clinical, synthetic): credits {3, 6, 10} x b {0.25, 0.10}. Rule: proposed changes >= 2% of
+  decisions vs drift-only AND spends >= 50% of its allowance, then the smallest change. Dev log loss is printed
+  for information and is **not** used to choose.
+- New config keys (default = v1 behaviour, so `configs/core.yaml` and its hash are unchanged):
+  `clinical.shift_features`, `clinical.shift_magnitude`.
+- `--write-candidate` produces `configs/v2_candidate.yaml`; it becomes `configs/v2.yaml` only after supervisor
+  review. v2 runs must use `--config configs/v2.yaml --tag v2` and a NEW output folder.
+
+Synthetic stage B result (dev seeds 101, 102; `results/sweep_dev_synthetic.json`): only **credits = 10** makes
+the priority rule change decisions (3.9% at b = 0.25) while the budget binds (85% spent). Clinical sweep: run in
+Colab (notebook cells 13–15).

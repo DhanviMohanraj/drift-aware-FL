@@ -60,6 +60,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/core.yaml")
     ap.add_argument("--dataset", default="synthetic", choices=["synthetic", "clinical"])
+    ap.add_argument("--tag", default="", help="suffix for the output file, e.g. v2 (keeps v1 file intact)")
     a = ap.parse_args()
     cfg = load_config(a.config)
     cfg = deep_update(cfg, cfg.get("dataset_overrides", {}).get(a.dataset, {}))
@@ -108,7 +109,7 @@ def main():
     bestk = min(out["periodic"], key=lambda k: out["periodic"][k]["drift"] + out["periodic"][k]["null"])
     out["selected_periodic_interval"] = int(bestk)
     print(f"selected periodic interval = {bestk}")
-    atomic_write_json(ROOT / "results" / f"calibration_{a.dataset}.json", out)
+    atomic_write_json(ROOT / "results" / f"calibration_{a.dataset}{'_' + a.tag if a.tag else ''}.json", out)
 
 
 if __name__ == "__main__":

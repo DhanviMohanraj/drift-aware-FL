@@ -87,3 +87,27 @@ def test_clinical_measurement_shift_only_intended(prepared, cfg):
                 np.testing.assert_allclose(d[:, j], 1.0, rtol=1e-6)
                 d[:, j] = 0
             assert np.abs(d).max() < 1e-6
+
+
+def test_configurable_multi_feature_shift(prepared, cfg):
+    """v2 option: several numeric features shifted by a configured magnitude; v1 default unchanged."""
+    from src.drift import get_scenario
+    from src.streams import ClinicalWorld
+    from src.utils import deep_update
+    feats = ["num_lab_procedures", "num_medications", "number_inpatient"]
+    c2 = deep_update(cfg, {"clinical": {"shift_features": feats, "shift_magnitude": 3.0}})
+    w0 = ClinicalWorld(cfg, 11, get_scenario("C0"), prepared)
+    w2 = ClinicalWorld(c2, 11, get_scenario("C2"), prepared)
+    cols = [prepared["feature_names"].index(f) for f in feats]
+    for c, t in [(0, 29), (0, 30), (1, 49), (2, 49), (3, 49)]:
+        d = w2.chunk(c, t).x - w0.chunk(c, t).x
+        affected = {0: 30, 1: 50, 2: 70}.get(c)   # test horizon is 50
+        if affected is not None and t >= affected:
+            np.testing.assert_allclose(d[:, cols], 3.0, rtol=1e-6)
+            d[:, cols] = 0
+        assert np.abs(d).max() < 1e-6
+    w1 = ClinicalWorld(cfg, 11, get_scenario("C1"), prepared)       # default stays +1 SD on one feature
+    assert w1.shift_features == ["num_lab_procedures"] and w1._magnitude() == 1.0
+    import pytest
+    with pytest.raises(ValueError):
+        ClinicalWorld(deep_update(cfg, {"clinical": {"shift_features": ["race"]}}), 11, get_scenario("C1"), prepared)
