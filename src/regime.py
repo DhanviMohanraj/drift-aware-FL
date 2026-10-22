@@ -60,17 +60,23 @@ def main():
     ap.add_argument("--config", default="configs/v2.yaml")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--dataset", default="synthetic", choices=["synthetic", "clinical"])
+    ap.add_argument("--quick", action="store_true",
+                    help="clinical quick run: scenario C1 only, 1 dev seed (101) for the periodic interval")
     a = ap.parse_args()
     global DATASET, BUDGETS, SCENARIOS, DEV_SEEDS, METHODS
     DATASET = a.dataset
     g = GRIDS[a.dataset]
     BUDGETS, SCENARIOS, DEV_SEEDS, METHODS = g["budgets"], g["scenarios"], g["dev_seeds"], g["methods"]
+    if a.quick:
+        SCENARIOS, DEV_SEEDS = SCENARIOS[:1], DEV_SEEDS[:1]
     cfg = load_config(a.config)
     import json
     choice = ROOT / "results" / "regime" / "tune_need_choice.json"
     if choice.exists():   # proposed_v2's one setting, chosen on dev seeds by src/tune_need.py
         cfg = deep_update(cfg, {"policy": {"need_ema": json.loads(choice.read_text())["need_ema"]}})
     out = ROOT / "results" / ("regime" if a.dataset == "synthetic" else "regime_clinical")
+    print(f"[regime] {a.dataset}: budgets {BUDGETS}, scenarios {SCENARIOS}, dev seeds {DEV_SEEDS}, methods {METHODS}",
+          flush=True)
     # 1) dev-only choice of the periodic interval per budget
     dev = _map(a.workers, _job, [(cfg, sc, "periodic", s, b, k, "dev")
                                  for b in BUDGETS for k in INTERVALS for sc in SCENARIOS for s in DEV_SEEDS])
