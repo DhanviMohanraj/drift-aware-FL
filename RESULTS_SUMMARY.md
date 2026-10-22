@@ -174,3 +174,15 @@ proposed v2's setting was chosen on synthetic dev data and reused unchanged. Tab
 - Proposed v2 has the lowest loss in 3 of 4 clinical cells and uses fewer bytes than periodic (7.1 vs 8.2 MB at b = 0.10).
 - The original proposed rule does not beat periodic on clinical data; the current-need priority is what helps.
 - Worst-clinic loss is still lower for periodic (e.g. b = 0.10, C1: 0.594 vs 0.609 for v2).
+
+## Proposed v3: v2 + fairness floor (synthetic, 22 Oct 2026)
+
+v3 forces any clinic not trained for K steps to the front of the queue. K = 30 was chosen on synthetic dev seeds by
+`src/tune_fair.py`; on dev, v3 was worse than v2 on both average and worst-clinic loss (score 0.527 vs 0.516),
+because on synthetic data v2 already beats periodic on worst-clinic loss everywhere. Final run (once):
+
+- b = 0.05: v3 is worse than v2 on average (e.g. S3 0.535 vs 0.515) and on worst-clinic loss in every scenario.
+- b = 0.10: v3 is best only in S6; v2 is best in S2 and S3.
+- b = 0.25: v3 has the lowest average in S2 and S3 and the lowest worst-clinic loss in all four scenarios.
+- Reading: a fairness floor spends scarce updates on clinics that do not need them; it only pays off when the
+  budget is moderate. The worst-clinic gap that motivated v3 appears on clinical data only (clinical test pending).
