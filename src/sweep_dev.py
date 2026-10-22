@@ -346,8 +346,9 @@ def write_candidate(config, tag=""):
     sfx = f"_{tag}" if tag else ""
     rc = ROOT / "results" / f"sweep_dev_clinical{sfx}.json"
     rs = ROOT / "results" / f"sweep_dev_synthetic{sfx}.json"
-    if not rs.exists():
-        rs = ROOT / "results" / "sweep_dev_synthetic.json"
+    for alt in ("sweep_dev_synthetic_4seeds.json", "sweep_dev_synthetic.json"):   # most seeds first
+        if not rs.exists():
+            rs = ROOT / "results" / alt
     if not rc.exists():
         raise SystemExit("run `python -m src.sweep_dev --dataset clinical` first")
     c = json.loads(rc.read_text())
