@@ -265,6 +265,41 @@ class Proposed(DriftOnly):
         return sorted(self.pending.req, key=lambda c: (-self.priority(c, t), c))
 
 
+class ProposedV2(Proposed):
+    """Current-need priority: rank pending clinics by their CURRENT sentinel-loss excess over that clinic's own
+    calibration level (EMA of recent chunk losses, in calibration-SD units, clipped at 3) + eta * waiting time.
+    Uses only what each clinic already monitors; no event metadata. Credits, expiry, budget unchanged."""
+    name = "proposed_v2"
+
+    def __init__(self, cfg, seed):
+        super().__init__(cfg, seed)
+        self.ema_alpha = cfg["policy"].get("need_ema", 0.5)
+        self.sd_floor = cfg["detector"]["sd_floor"]
+        self.base = None
+        self.ema = [None] * self.K
+
+    def set_baseline(self, calib_ref):
+        self.base = [(m, max(s, self.sd_floor)) for m, s, _ in calib_ref]
+
+    def observe(self, t, signals):
+        super().observe(t, signals)
+        for c, s in enumerate(signals):
+            self.ema[c] = s.loss if self.ema[c] is None else self.ema_alpha * s.loss + (1 - self.ema_alpha) * self.ema[c]
+
+    def need(self, c):
+        m, sd = self.base[c]
+        return min(max(0.0, (self.ema[c] - m) / sd), self.sev_clip)
+
+    def priority(self, c, t):
+        return self.need(c) + self.eta * min(self.pending.wait(c, t) / self.wait_norm, 1.0)
+
+    def _extra_state(self):
+        return dict(ema=list(self.ema))
+
+    def _load_extra(self, st):
+        self.ema = list(st["ema"])
+
+
 METHODS = ["always_on", "periodic", "random", "drift_only", "known_time", "proposed"]
 ABLATIONS = ["proposed_nosev", "proposed_nowait"]
 
@@ -282,6 +317,8 @@ def make_policy(method: str, cfg: dict, seed: int, event_manifest: list[dict]) -
         return KnownTime(cfg, seed, event_manifest)
     if method == "proposed":
         return Proposed(cfg, seed)
+    if method == "proposed_v2":
+        return ProposedV2(cfg, seed)
     if method == "proposed_nosev":
         p = Proposed(cfg, seed, use_severity=False)
         p.name = method

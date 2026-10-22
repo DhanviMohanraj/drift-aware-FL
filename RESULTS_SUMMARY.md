@@ -144,3 +144,16 @@ re-chosen per budget on dev seeds 101–104 (chosen: 2, 5, 2). Full table: `resu
 - **b = 0.25:** mixed; periodic wins S2 and S6, drift-triggered wins S3 and S5 with ~30–55% fewer bytes.
 - Takeaway: the tighter the budget, the more drift-triggered retraining — and the priority rule — help.
   Synthetic only; clinical evidence at b = 0.10 (C1: proposed 0.328 vs periodic 0.339) points the same way.
+
+## Proposed v2: current-need priority (22 Oct 2026)
+
+`ProposedV2` ranks pending clinics by their *current* sentinel-loss excess over their own calibration level
+(EMA of recent chunk losses, in calibration-SD units) + waiting time, instead of the severity frozen at alarm time.
+Its one setting (EMA weight 0.3, from {0.3, 0.5, 0.8}) was chosen on dev seeds 101–104 by `src/tune_need.py`
+(dev: essentially tied with proposed overall, better at b = 0.05). It was then run once on final seeds.
+
+- b = 0.05: lowest loss in S2, S3, S6 and beats periodic on 20/20 seed-scenario pairs (S3: 0.515 vs proposed
+  0.523 vs periodic 0.541).
+- b = 0.10: lowest loss in S2 and S3; beats periodic on 15/20 pairs.
+- b = 0.25: mixed (best only in S3).
+Clinical version: `python -m src.regime --dataset clinical` (Colab).

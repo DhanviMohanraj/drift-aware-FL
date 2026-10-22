@@ -80,6 +80,8 @@ class Simulation:
             self.calib_ref.append((d.ref_mean, d.ref_sd, len(losses)))
         self.policy = make_policy(method, cfg, seed if policy_seed is None else policy_seed,
                                   self.manifest if method == "known_time" else [])
+        if hasattr(self.policy, "set_baseline"):
+            self.policy.set_baseline(self.calib_ref)
         full = self.acct.full_round()
         b = cfg["budget"]["b"]
         if self.policy.budgeted:
