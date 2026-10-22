@@ -49,6 +49,8 @@ SCENARIOS: dict[str, Scenario] = {
                    tuple(Event(c, 35, 55, "gradual_concept") for c in ALL), {"angle_deg": 60.0}),
     "S5": Scenario("S5", "synthetic", "Prior shift: prevalence 0.3->0.6 at t=40, all clinics",
                    _abrupt("prior", ALL, 40), {"pre": 0.3, "post": 0.6}),
+    "S6": Scenario("S6", "synthetic", "Localized sudden concept shift: rotate 60 deg, clinic 1 only at t=40",
+                   _abrupt("concept", (0,), 40), {"angle_deg": 60.0}),
     "C0": Scenario("C0", "clinical", "Clinical stationary control (seeded order)"),
     "C1": Scenario("C1", "clinical", "Measurement shift +1 warm-start SD in num_lab_procedures, clinics 1-2 at t=40",
                    _abrupt("measurement", (0, 1), 40), {"shift": 1.0}),

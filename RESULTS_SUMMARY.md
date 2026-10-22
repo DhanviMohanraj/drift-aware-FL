@@ -127,3 +127,20 @@ periodic interval 2. Tables: `results/clinical_v2/tables/results.md`.
 - Worst-clinic loss is better for periodic (0.55–0.56 vs 0.63–0.66).
 - Conclusion with synthetic v2: drift-triggered retraining helps only under tight budgets or staggered local
   drift; with a moderate budget a fixed schedule is hard to beat. The priority rule is not a contribution.
+
+---
+
+# Regime study: tight budgets and localized drift (synthetic, 22 Oct 2026)
+
+`python -m src.regime --config configs/v2.yaml` — predeclared grid: b ∈ {0.05, 0.10, 0.25} × S2, S3, S5,
+S6 (new: one clinic, sudden concept shift) × 6 methods × 5 seeds. For fairness the periodic interval was
+re-chosen per budget on dev seeds 101–104 (chosen: 2, 5, 2). Full table: `results/regime/results.md`.
+
+- **b = 0.05:** proposed has the lowest loss in S2, S3, S6 and beats periodic on 19 of 20 seed-scenario pairs
+  (e.g. S2 0.521 vs 0.536). It also beats drift-only in S2, S3, S6 — the first setting where the priority rule
+  clearly matters (tight budget = several clinics competing).
+- **b = 0.10:** drift-triggered methods beat periodic in all four scenarios (proposed better on 16/20 pairs)
+  while sending less (≈1.5 MB vs 1.66 MB); proposed vs drift-only is mixed.
+- **b = 0.25:** mixed; periodic wins S2 and S6, drift-triggered wins S3 and S5 with ~30–55% fewer bytes.
+- Takeaway: the tighter the budget, the more drift-triggered retraining — and the priority rule — help.
+  Synthetic only; clinical evidence at b = 0.10 (C1: proposed 0.328 vs periodic 0.339) points the same way.
