@@ -275,6 +275,61 @@ def run(dataset, config, workers, stage_a_choice=None, dev_seeds=None, tag=""):
     print(f"[sweep] wrote {path.relative_to(ROOT)}")
 
 
+def merge(paths, tag):
+    """Combine sweeps run on different dev seeds. Stage A: pool raw per-seed rows and re-rank.
+    Stage B: average the per-setting tables (each file has the same scenarios x seeds count),
+    valid only if every file ran stage B with the same stage-A setting."""
+    reps = [json.loads(Path(p).read_text()) for p in paths]
+    ds = {r["dataset"] for r in reps}
+    assert len(ds) == 1, "merge files from one dataset only"
+    dataset = ds.pop()
+    seeds = sorted({s for r in reps for s in r["dev_seeds"]})
+    out = {"dataset": dataset, "merged_from": [str(p) for p in paths], "dev_seeds": seeds,
+           "rules": reps[0]["rules"]}
+    print(f"[merge] {dataset}: seeds {seeds}")
+    if dataset == "clinical":
+        rows = [x for r in reps for x in r["stage_a"]["raw"]]
+        for x in rows:   # recompute balance with the current (symmetric) rule
+            pooled = max(x["dev_prevalence"], 1e-9)
+            prev = x["dev_client_prevalence"]
+            x["dev_max_skew"] = float(max(max(prev) / pooled, pooled / max(min(prev), 1e-9)))
+        ta = summarise_a(rows)
+        print("\n[merge] STAGE A (all seeds pooled):")
+        print(ta.round(3).to_string(index=False))
+        top = ta.iloc[0]
+        choice = {"alpha": float(top.alpha), "drift": str(top.drift), "features": DRIFTS[str(top.drift)][0],
+                  "magnitude": DRIFTS[str(top.drift)][1], "threshold": float(top.threshold)}
+        used = {json.dumps({k: r["stage_a"]["choice"][k] for k in ("alpha", "drift", "threshold")}, sort_keys=True)
+                for r in reps}
+        same = used == {json.dumps({k: choice[k] for k in ("alpha", "drift", "threshold")}, sort_keys=True)}
+        print(f"\n[merge] stage A choice: {choice}")
+        if not same:
+            print("[merge] WARNING: the pooled stage-A choice differs from the setting stage B was run with "
+                  f"({used}). Stage B below does NOT apply to the new choice - rerun stage B before freezing.")
+        out["stage_a"] = {"table": ta.to_dict("records"), "raw": rows, "choice": choice,
+                          "stage_b_valid_for_choice": same}
+    tabs = [pd.DataFrame(r["stage_b"]["table"]) for r in reps]
+    cols = ["decision_difference", "proposed_utilisation", "proposed_trainings", "proposed_expired",
+            "dev_logloss_proposed", "dev_logloss_drift_only", "dev_logloss_periodic"]
+    tb = pd.concat(tabs).groupby(["credits", "b"], as_index=False)[cols].mean()
+    tb["plan_distance"] = [CREDITS.index(int(c)) + BUDGETS.index(float(b)) for c, b in zip(tb.credits, tb.b)]
+    tb["priority_matters"] = tb.decision_difference >= DIFF_TARGET
+    tb["budget_binds"] = tb.proposed_utilisation >= UTIL_TARGET
+    tb = tb.sort_values(["priority_matters", "budget_binds", "plan_distance", "decision_difference"],
+                        ascending=[False, False, True, False])
+    print("\n[merge] STAGE B (averaged over files; dev log loss for information only):")
+    print(tb.round(4).to_string(index=False))
+    top = tb.iloc[0]
+    out["stage_b"] = {"table": tb.to_dict("records"),
+                      "choice": {"credits": int(top.credits), "b": float(top.b),
+                                 "priority_matters": bool(top.priority_matters),
+                                 "budget_binds": bool(top.budget_binds)}}
+    print(f"\n[merge] stage B choice: credits={int(top.credits)}, b={top.b}")
+    path = ROOT / "results" / f"sweep_dev_{dataset}_{tag}.json"
+    atomic_write_json(path, out)
+    print(f"[merge] wrote {path.relative_to(ROOT)}")
+
+
 def write_candidate(config, tag=""):
     cfg = base_cfg(config)
     sfx = f"_{tag}" if tag else ""
@@ -319,11 +374,18 @@ def main():
     ap.add_argument("--write-candidate", action="store_true")
     ap.add_argument("--dev-seeds", type=int, nargs="+", default=None, help="override dev seeds, e.g. 101 102 103 104")
     ap.add_argument("--tag", default="", help="suffix for outputs, e.g. 4seeds (keeps earlier sweep files)")
+    ap.add_argument("--fix-stage-a", nargs=3, metavar=("ALPHA", "DRIFT", "THRESHOLD"), default=None,
+                    help="run stage B with this stage-A setting (so extra seeds match an earlier sweep)")
+    ap.add_argument("--merge", nargs="+", default=None, metavar="JSON",
+                    help="merge earlier sweep JSON files (same dataset) into one, re-applying the rules")
     a = ap.parse_args()
-    if a.write_candidate:
+    if a.merge:
+        merge(a.merge, a.tag or "merged")
+    elif a.write_candidate:
         write_candidate(a.config, a.tag)
     elif a.dataset:
-        run(a.dataset, a.config, a.workers, dev_seeds=a.dev_seeds, tag=a.tag)
+        fix = (float(a.fix_stage_a[0]), a.fix_stage_a[1], float(a.fix_stage_a[2])) if a.fix_stage_a else None
+        run(a.dataset, a.config, a.workers, stage_a_choice=fix, dev_seeds=a.dev_seeds, tag=a.tag)
     else:
         ap.error("give --dataset or --write-candidate")
 
