@@ -216,7 +216,7 @@ def _map(pool, fn, jobs):
     return out
 
 
-def run(dataset, config, workers, stage_a_choice=None, dev_seeds=None, tag=""):
+def run(dataset, config, workers, stage_a_choice=None, dev_seeds=None, tag="", stage_a_only_fixed=False):
     cfg = base_cfg(config)
     if dev_seeds:
         cfg["dev_seeds"] = list(dev_seeds)
@@ -224,7 +224,15 @@ def run(dataset, config, workers, stage_a_choice=None, dev_seeds=None, tag=""):
               "rules": dict(FA_TARGET=FA_TARGET, SKEW_LIMIT=SKEW_LIMIT, DIFF_TARGET=DIFF_TARGET,
                             UTIL_TARGET=UTIL_TARGET)}
     alpha = drift = thr = None
-    if dataset == "clinical":
+    if dataset == "clinical" and stage_a_only_fixed and stage_a_choice:
+        alpha, drift, thr = stage_a_choice
+        for s_ in cfg["dev_seeds"]:
+            get_prepared(cfg, alpha, s_)
+        print(f"[sweep] stage A skipped; stage B uses alpha={alpha}, drift={drift}, threshold={thr}")
+        report["stage_a"] = {"skipped": True, "choice": {"alpha": alpha, "drift": drift,
+                             "features": DRIFTS[drift][0], "magnitude": DRIFTS[drift][1], "threshold": thr}}
+        scenarios = ["C1", "C2"]
+    elif dataset == "clinical":
         # prepare once per (alpha, seed) in the parent so forked workers share it
         for a_, s_ in itertools.product(ALPHAS, cfg["dev_seeds"]):
             get_prepared(cfg, a_, s_)
@@ -376,6 +384,8 @@ def main():
     ap.add_argument("--tag", default="", help="suffix for outputs, e.g. 4seeds (keeps earlier sweep files)")
     ap.add_argument("--fix-stage-a", nargs=3, metavar=("ALPHA", "DRIFT", "THRESHOLD"), default=None,
                     help="run stage B with this stage-A setting (so extra seeds match an earlier sweep)")
+    ap.add_argument("--stage-b-only", action="store_true",
+                    help="with --fix-stage-a: skip stage A entirely (rerun stage B for a new choice)")
     ap.add_argument("--merge", nargs="+", default=None, metavar="JSON",
                     help="merge earlier sweep JSON files (same dataset) into one, re-applying the rules")
     a = ap.parse_args()
@@ -385,7 +395,8 @@ def main():
         write_candidate(a.config, a.tag)
     elif a.dataset:
         fix = (float(a.fix_stage_a[0]), a.fix_stage_a[1], float(a.fix_stage_a[2])) if a.fix_stage_a else None
-        run(a.dataset, a.config, a.workers, stage_a_choice=fix, dev_seeds=a.dev_seeds, tag=a.tag)
+        run(a.dataset, a.config, a.workers, stage_a_choice=fix, dev_seeds=a.dev_seeds, tag=a.tag,
+            stage_a_only_fixed=a.stage_b_only)
     else:
         ap.error("give --dataset or --write-candidate")
 
