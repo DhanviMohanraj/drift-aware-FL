@@ -1,0 +1,2 @@
+[regime] clinical: budgets [0.05, 0.1], scenarios ['C1', 'C2'], dev seeds [101, 102], methods ['periodic', 'drift_only', 'proposed', 'proposed_v2', 'proposed_v3']
+[regime] periodic interval chosen on dev seeds: {0.05: 2, 0.1: 2}
