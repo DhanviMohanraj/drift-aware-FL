@@ -21,7 +21,7 @@ from .utils import ROOT, atomic_write_csv, atomic_write_json, deep_update, load_
 BUDGETS = [0.05, 0.10, 0.25]
 SCENARIOS = ["S2", "S3", "S5", "S6"]
 INTERVALS = [2, 5, 10]
-METHODS = ["periodic", "random", "drift_only", "proposed", "proposed_v2", "known_time"]
+METHODS = ["periodic", "random", "drift_only", "proposed", "proposed_v2", "proposed_v3", "known_time"]
 DEV_SEEDS = [101, 102, 103, 104]
 
 
@@ -30,7 +30,7 @@ GRIDS = {   # clinical grid is smaller so it fits a Colab session (~1 h with 2 w
     "synthetic": dict(budgets=[0.05, 0.10, 0.25], scenarios=["S2", "S3", "S5", "S6"], dev_seeds=[101, 102, 103, 104],
                       methods=METHODS),
     "clinical": dict(budgets=[0.05, 0.10], scenarios=["C1", "C2"], dev_seeds=[101, 102],
-                     methods=["periodic", "drift_only", "proposed", "proposed_v2"]),
+                     methods=["periodic", "drift_only", "proposed", "proposed_v2", "proposed_v3"]),
 }
 
 
@@ -74,6 +74,9 @@ def main():
     choice = ROOT / "results" / "regime" / "tune_need_choice.json"
     if choice.exists():   # proposed_v2's one setting, chosen on dev seeds by src/tune_need.py
         cfg = deep_update(cfg, {"policy": {"need_ema": json.loads(choice.read_text())["need_ema"]}})
+    fair = ROOT / "results" / "regime" / ("tune_fair_choice.json" if a.dataset == "synthetic" else "tune_fair_choice_clinical.json")
+    if fair.exists():   # proposed_v3's fairness floor, chosen on dev data by src/tune_fair.py
+        cfg = deep_update(cfg, {"policy": {"fair_k": json.loads(fair.read_text())["fair_k"]}})
     out = ROOT / "results" / ("regime" if a.dataset == "synthetic" else "regime_clinical")
     print(f"[regime] {a.dataset}: budgets {BUDGETS}, scenarios {SCENARIOS}, dev seeds {DEV_SEEDS}, methods {METHODS}",
           flush=True)
@@ -97,11 +100,11 @@ def main():
              "beats periodic on the same seed.", ""]
     ao = res[res.method == "always_on"].groupby("scenario").post_logloss.mean()
     names = {"periodic": "periodic", "random": "random", "drift_only": "drift-only", "proposed": "proposed",
-             "proposed_v2": "proposed v2", "known_time": "known-time"}
+             "proposed_v2": "proposed v2", "proposed_v3": "proposed v3", "known_time": "known-time"}
     budgeted = [m for m in METHODS if m != "known_time"]
     for b in BUDGETS:
         head = ["Scenario", "always-on*"] + [names[m] for m in METHODS] + \
-               ["proposed better than periodic", "v2 better than periodic", "proposed MB vs periodic MB"]
+               ["v2 better than periodic", "v3 better than periodic", "v3 MB vs periodic MB"]
         lines += [f"## Budget b = {b:g}", "", "| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
         for sc in SCENARIOS:
             g = res[(res.b == b) & (res.scenario == sc)]
@@ -112,10 +115,17 @@ def main():
             best = min(m.loc[budgeted])
             cell = lambda k: (f"**{m[k]:.4f}**" if k in budgeted and m[k] == best else f"{m[k]:.4f}")
             row = [sc, f"{ao[sc]:.4f}"] + [cell(k) for k in METHODS] + \
-                  [f"{beat('proposed')}/{len(seeds)}", f"{beat('proposed_v2')}/{len(seeds)}", f"{mb['proposed']:.2f} vs {mb['periodic']:.2f}"]
+                  [f"{beat('proposed_v2')}/{len(seeds)}", f"{beat('proposed_v3')}/{len(seeds)}", f"{mb['proposed_v3']:.2f} vs {mb['periodic']:.2f}"]
             lines.append("| " + " | ".join(row) + " |")
         lines.append("")
-    lines += ["*always-on is unbudgeted and shown only as a reference.", ""]
+    lines += ["## Worst-clinic post-change loss (mean of seeds; lower is better)", "",
+              "| Budget | Scenario | " + " | ".join(names[m] for m in budgeted) + " |", "|---|---|" + "---|" * len(budgeted)]
+    for b in BUDGETS:
+        for sc in SCENARIOS:
+            w = res[(res.b == b) & (res.scenario == sc)].groupby("method").worst_client.mean()
+            lo = min(w.loc[budgeted])
+            lines.append(f"| {b:g} | {sc} | " + " | ".join((f"**{w[m]:.4f}**" if w[m] == lo else f"{w[m]:.4f}") for m in budgeted) + " |")
+    lines += ["", "*always-on is unbudgeted and shown only as a reference.", ""]
     (out / "results.md").write_text("\n".join(lines))
     atomic_write_json(out / "chosen_intervals.json", chosen)
     print("\n".join(lines))

@@ -300,6 +300,39 @@ class ProposedV2(Proposed):
         self.ema = list(st["ema"])
 
 
+class ProposedV3(ProposedV2):
+    """v2 + fairness floor: a clinic not trained for `fair_k` steps is put at the front of the queue
+    (oldest first) even without a drift alarm; the rest of the queue keeps v2's current-need order.
+    The byte budget is unchanged, so the floor competes for the same allowance."""
+    name = "proposed_v3"
+
+    def __init__(self, cfg, seed):
+        super().__init__(cfg, seed)
+        self.fair_k = cfg["policy"].get("fair_k", 20)
+        self.last_served = [0] * self.K
+
+    def candidates(self, t):
+        overdue = sorted((c for c in range(self.K) if t - self.last_served[c] >= self.fair_k),
+                         key=lambda c: (self.last_served[c], c))
+        rest = [c for c in super().candidates(t) if c not in overdue]
+        return overdue + rest
+
+    def on_served(self, t, admitted):
+        super().on_served(t, admitted)
+        for c in admitted:
+            self.last_served[c] = t
+
+    def credits(self, c):
+        return self.pending.credits_of(c)
+
+    def _extra_state(self):
+        return dict(ema=list(self.ema), last_served=list(self.last_served))
+
+    def _load_extra(self, st):
+        self.ema = list(st["ema"])
+        self.last_served = list(st.get("last_served", [0] * self.K))
+
+
 METHODS = ["always_on", "periodic", "random", "drift_only", "known_time", "proposed"]
 ABLATIONS = ["proposed_nosev", "proposed_nowait"]
 
@@ -319,6 +352,8 @@ def make_policy(method: str, cfg: dict, seed: int, event_manifest: list[dict]) -
         return Proposed(cfg, seed)
     if method == "proposed_v2":
         return ProposedV2(cfg, seed)
+    if method == "proposed_v3":
+        return ProposedV3(cfg, seed)
     if method == "proposed_nosev":
         p = Proposed(cfg, seed, use_severity=False)
         p.name = method

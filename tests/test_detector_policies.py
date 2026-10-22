@@ -97,3 +97,16 @@ def test_select_admits_prefix_only():
     # order by priority: 3 (sev 3), 0 (sev 2), 1 (sev 1); cost(2)=80 <= 80 tokens < cost(3)=100
     assert got == [3, 0]
     assert tb.tokens == 0
+
+
+def test_v3_fairness_floor_puts_overdue_clinic_first():
+    from src.policies import ProposedV3
+    cfg = _cfg()
+    cfg["policy"]["fair_k"] = 10
+    p = ProposedV3(cfg, 0)
+    p.set_baseline([(0.5, 0.05, 20)] * 4)
+    p.observe(0, sig([1, 0, 0, 0], [2.0, 0, 0, 0]))
+    assert p.candidates(5) == [0]                      # nobody overdue yet: only the alarmed clinic
+    p.on_served(5, [0])
+    cands = p.candidates(12)                           # clinics 1,2,3 not served for 12 >= 10 steps
+    assert cands[:3] == [1, 2, 3] and 0 in cands
