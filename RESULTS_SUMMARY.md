@@ -115,9 +115,9 @@ periodic interval 2. Tables: `results/clinical_v2/tables/results.md`.
 
 | Scenario | always-on | periodic | drift-only | proposed | proposed − periodic (seeds better) | proposed − drift-only (seeds better) |
 |---|---|---|---|---|---|---|
-| C0 no drift | 0.272 | **0.293** | 0.339 | 0.339 | +0.046 (1/5) | 0.000 |
+| C0 no drift | 0.272 | **0.293** | 0.338 | 0.338 | +0.046 (1/5) | 0.000 |
 | C1 shift, clinics 1–2 | 0.279 | **0.304** | 0.322 | 0.317 | +0.013 (1/5) | −0.005 (4/5) |
-| C2 staggered shift | 0.280 | **0.305** | 0.317 | 0.317 | +0.012 (1/5) | +0.000 |
+| C2 staggered shift | 0.280 | **0.305** | 0.316 | 0.317 | +0.012 (1/5) | +0.000 |
 
 - Periodic beats the drift-triggered methods in every clinical scenario, but spends 20.6 MB vs 9.1 MB.
 - Detection: 1.8/2 events in C1, 2/3 in C2 (v1: 0).
