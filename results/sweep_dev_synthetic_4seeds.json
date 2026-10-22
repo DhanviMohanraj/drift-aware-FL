@@ -1,0 +1,110 @@
+{
+  "config": "configs/core.yaml",
+  "dataset": "synthetic",
+  "dev_seeds": [
+    101,
+    102,
+    103,
+    104
+  ],
+  "rules": {
+    "DIFF_TARGET": 0.02,
+    "FA_TARGET": 1.0,
+    "SKEW_LIMIT": 3.0,
+    "UTIL_TARGET": 0.5
+  },
+  "stage_b": {
+    "choice": {
+      "b": 0.25,
+      "budget_binds": true,
+      "credits": 6,
+      "priority_matters": true
+    },
+    "table": [
+      {
+        "b": 0.25,
+        "budget_binds": true,
+        "credits": 6,
+        "decision_difference": 0.0353125,
+        "dev_logloss_drift_only": 0.4631176947463394,
+        "dev_logloss_periodic": 0.47462174312664296,
+        "dev_logloss_proposed": 0.46358863377821363,
+        "plan_distance": 1,
+        "priority_matters": true,
+        "proposed_expired": 0.0,
+        "proposed_trainings": 33.25,
+        "proposed_utilisation": 0.6399407114624506
+      },
+      {
+        "b": 0.25,
+        "budget_binds": true,
+        "credits": 10,
+        "decision_difference": 0.054375,
+        "dev_logloss_drift_only": 0.4647463132670368,
+        "dev_logloss_periodic": 0.47462174312664296,
+        "dev_logloss_proposed": 0.46549332608514715,
+        "plan_distance": 2,
+        "priority_matters": true,
+        "proposed_expired": 0.0,
+        "proposed_trainings": 43.125,
+        "proposed_utilisation": 0.8374216716475464
+      },
+      {
+        "b": 0.1,
+        "budget_binds": true,
+        "credits": 6,
+        "decision_difference": 0.0275,
+        "dev_logloss_drift_only": 0.47871252348519083,
+        "dev_logloss_periodic": 0.5031495761020981,
+        "dev_logloss_proposed": 0.4815266979650368,
+        "plan_distance": 2,
+        "priority_matters": true,
+        "proposed_expired": 1.25,
+        "proposed_trainings": 19.25,
+        "proposed_utilisation": 0.9457437578328353
+      },
+      {
+        "b": 0.1,
+        "budget_binds": true,
+        "credits": 10,
+        "decision_difference": 0.043750000000000004,
+        "dev_logloss_drift_only": 0.4858605806783429,
+        "dev_logloss_periodic": 0.5031495761020981,
+        "dev_logloss_proposed": 0.4864718362819458,
+        "plan_distance": 3,
+        "priority_matters": true,
+        "proposed_expired": 1.5,
+        "proposed_trainings": 19.5,
+        "proposed_utilisation": 0.9665742793791574
+      },
+      {
+        "b": 0.1,
+        "budget_binds": true,
+        "credits": 3,
+        "decision_difference": 0.0059375,
+        "dev_logloss_drift_only": 0.47863419590336953,
+        "dev_logloss_periodic": 0.5031495761020981,
+        "dev_logloss_proposed": 0.47985324020939657,
+        "plan_distance": 1,
+        "priority_matters": false,
+        "proposed_expired": 0.625,
+        "proposed_trainings": 15.75,
+        "proposed_utilisation": 0.7624289019570039
+      },
+      {
+        "b": 0.25,
+        "budget_binds": false,
+        "credits": 3,
+        "decision_difference": 0.00125,
+        "dev_logloss_drift_only": 0.47314136105542726,
+        "dev_logloss_periodic": 0.47462174312664296,
+        "dev_logloss_proposed": 0.47306684286130035,
+        "plan_distance": 0,
+        "priority_matters": false,
+        "proposed_expired": 0.0,
+        "proposed_trainings": 18.25,
+        "proposed_utilisation": 0.3466350139785983
+      }
+    ]
+  }
+}
