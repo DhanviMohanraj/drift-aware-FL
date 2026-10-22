@@ -1,0 +1,10 @@
+dataset,scenario,method,detected,n_events,misses,mean_detection_delay,false_alarms_per_100_client_steps,recovered,censored,mean_recovery_time,expired_requests,mean_alarm_to_service,n_client_trainings
+clinical,C0,drift_only,0.0,0.0,0.0,,0.25,0.0,0.0,,0.0,0.0,10.0
+clinical,C0,known_time,0.0,0.0,0.0,,0.25,0.0,0.0,,0.0,,0.0
+clinical,C0,proposed,0.0,0.0,0.0,,0.25,0.0,0.0,,0.0,0.0,10.0
+clinical,C1,drift_only,1.8,2.0,0.2,7.9,0.32608695652173914,2.0,0.0,11.5,0.0,0.9,26.2
+clinical,C1,known_time,1.8,2.0,0.2,7.9,0.32608695652173914,2.0,0.0,7.5,0.0,,20.0
+clinical,C1,proposed,1.8,2.0,0.2,7.9,0.32608695652173914,2.0,0.0,10.8,0.0,0.5,26.2
+clinical,C2,drift_only,2.0,3.0,1.0,5.9,0.5113636363636365,3.0,0.0,9.0,0.0,0.16666666666666669,30.8
+clinical,C2,known_time,2.0,3.0,1.0,5.9,0.5113636363636365,3.0,0.0,8.066666666666666,0.0,,30.0
+clinical,C2,proposed,2.0,3.0,1.0,5.9,0.5113636363636365,3.0,0.0,9.0,0.0,0.16666666666666669,30.8

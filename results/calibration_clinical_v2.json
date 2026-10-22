@@ -1,0 +1,468 @@
+{
+  "dataset": "clinical",
+  "dev_seeds": [
+    101,
+    102,
+    103,
+    104
+  ],
+  "periodic": {
+    "10": {
+      "drift": 0.3054122766018746,
+      "null": 0.29530839301593104
+    },
+    "2": {
+      "drift": 0.3054122766018746,
+      "null": 0.29530839301593104
+    },
+    "5": {
+      "drift": 0.3054122766018746,
+      "null": 0.29530839301593104
+    }
+  },
+  "selected_periodic_interval": 2,
+  "selected_threshold": 6.0,
+  "threshold_target_met": true,
+  "thresholds": {
+    "12.0": {
+      "detection_rate": 0.25,
+      "fa_per_100_drift_streams": 0.626852766798419,
+      "fa_per_100_null": 0.3125,
+      "mean_delay": 8.0,
+      "runs": {
+        "drift": [
+          {
+            "delays": [
+              12,
+              6
+            ],
+            "detected": 2,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 0.0,
+            "false_alarms": 0,
+            "scenario": "C1",
+            "seed": 101
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 1.0869565217391304,
+            "false_alarms": 4,
+            "scenario": "C1",
+            "seed": 102
+          },
+          {
+            "delays": [
+              13
+            ],
+            "detected": 1,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 0.0,
+            "false_alarms": 0,
+            "scenario": "C1",
+            "seed": 103
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 1.0869565217391304,
+            "false_alarms": 4,
+            "scenario": "C1",
+            "seed": 104
+          },
+          {
+            "delays": [
+              9
+            ],
+            "detected": 1,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 0.5681818181818182,
+            "false_alarms": 2,
+            "scenario": "C2",
+            "seed": 101
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 1.1363636363636365,
+            "false_alarms": 4,
+            "scenario": "C2",
+            "seed": 102
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 0.2840909090909091,
+            "false_alarms": 1,
+            "scenario": "C2",
+            "seed": 103
+          },
+          {
+            "delays": [
+              0
+            ],
+            "detected": 1,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 0.8522727272727273,
+            "false_alarms": 3,
+            "scenario": "C2",
+            "seed": 104
+          }
+        ],
+        "null": [
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 0.0,
+            "false_alarms": 0,
+            "scenario": "C0",
+            "seed": 101
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 0.5,
+            "false_alarms": 2,
+            "scenario": "C0",
+            "seed": 102
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 0.0,
+            "false_alarms": 0,
+            "scenario": "C0",
+            "seed": 103
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 0.75,
+            "false_alarms": 3,
+            "scenario": "C0",
+            "seed": 104
+          }
+        ]
+      }
+    },
+    "3.0": {
+      "detection_rate": 0.55,
+      "fa_per_100_drift_streams": 1.4945652173913042,
+      "fa_per_100_null": 1.4375,
+      "mean_delay": 4.090909090909091,
+      "runs": {
+        "drift": [
+          {
+            "delays": [
+              3,
+              4
+            ],
+            "detected": 2,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 1.0869565217391304,
+            "false_alarms": 4,
+            "scenario": "C1",
+            "seed": 101
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 1.6304347826086956,
+            "false_alarms": 6,
+            "scenario": "C1",
+            "seed": 102
+          },
+          {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 1.0869565217391304,
+            "false_alarms": 4,
+            "scenario": "C1",
+            "seed": 103
+          },
+          {
+            "delays": [
+              1,
+              0
+            ],
+            "detected": 2,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 1.9021739130434783,
+            "false_alarms": 7,
+            "scenario": "C1",
+            "seed": 104
+          },
+          {
+            "delays": [
+              0,
+              5,
+              11
+            ],
+            "detected": 3,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 1.1363636363636365,
+            "false_alarms": 4,
+            "scenario": "C2",
+            "seed": 101
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 1.7045454545454546,
+            "false_alarms": 6,
+            "scenario": "C2",
+            "seed": 102
+          },
+          {
+            "delays": [
+              12
+            ],
+            "detected": 1,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 1.1363636363636365,
+            "false_alarms": 4,
+            "scenario": "C2",
+            "seed": 103
+          },
+          {
+            "delays": [
+              4,
+              3
+            ],
+            "detected": 2,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 2.272727272727273,
+            "false_alarms": 8,
+            "scenario": "C2",
+            "seed": 104
+          }
+        ],
+        "null": [
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 1.0,
+            "false_alarms": 4,
+            "scenario": "C0",
+            "seed": 101
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 1.5,
+            "false_alarms": 6,
+            "scenario": "C0",
+            "seed": 102
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 1.25,
+            "false_alarms": 5,
+            "scenario": "C0",
+            "seed": 103
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 2.0,
+            "false_alarms": 8,
+            "scenario": "C0",
+            "seed": 104
+          }
+        ]
+      }
+    },
+    "6.0": {
+      "detection_rate": 0.55,
+      "fa_per_100_drift_streams": 0.903223814229249,
+      "fa_per_100_null": 1.0,
+      "mean_delay": 6.181818181818182,
+      "runs": {
+        "drift": [
+          {
+            "delays": [
+              3,
+              4
+            ],
+            "detected": 2,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 0.8152173913043478,
+            "false_alarms": 3,
+            "scenario": "C1",
+            "seed": 101
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 1.0869565217391304,
+            "false_alarms": 4,
+            "scenario": "C1",
+            "seed": 102
+          },
+          {
+            "delays": [
+              2
+            ],
+            "detected": 1,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 0.5434782608695652,
+            "false_alarms": 2,
+            "scenario": "C1",
+            "seed": 103
+          },
+          {
+            "delays": [
+              9,
+              2
+            ],
+            "detected": 2,
+            "eligible": 368,
+            "events": 2,
+            "fa_per_100": 1.0869565217391304,
+            "false_alarms": 4,
+            "scenario": "C1",
+            "seed": 104
+          },
+          {
+            "delays": [
+              13,
+              4
+            ],
+            "detected": 2,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 0.8522727272727273,
+            "false_alarms": 3,
+            "scenario": "C2",
+            "seed": 101
+          },
+          {
+            "delays": [
+              14
+            ],
+            "detected": 1,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 1.1363636363636365,
+            "false_alarms": 4,
+            "scenario": "C2",
+            "seed": 102
+          },
+          {
+            "delays": [
+              12
+            ],
+            "detected": 1,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 0.5681818181818182,
+            "false_alarms": 2,
+            "scenario": "C2",
+            "seed": 103
+          },
+          {
+            "delays": [
+              2,
+              3
+            ],
+            "detected": 2,
+            "eligible": 352,
+            "events": 3,
+            "fa_per_100": 1.1363636363636365,
+            "false_alarms": 4,
+            "scenario": "C2",
+            "seed": 104
+          }
+        ],
+        "null": [
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 1.0,
+            "false_alarms": 4,
+            "scenario": "C0",
+            "seed": 101
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 0.75,
+            "false_alarms": 3,
+            "scenario": "C0",
+            "seed": 102
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 0.75,
+            "false_alarms": 3,
+            "scenario": "C0",
+            "seed": 103
+          },
+          {
+            "delays": [],
+            "detected": 0,
+            "eligible": 400,
+            "events": 0,
+            "fa_per_100": 1.5,
+            "false_alarms": 6,
+            "scenario": "C0",
+            "seed": 104
+          }
+        ]
+      }
+    }
+  }
+}

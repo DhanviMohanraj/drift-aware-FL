@@ -105,3 +105,25 @@ Post-change pooled log loss at b = 0.25 (mean of 5 seeds; lower is better):
 - **The proposed priority rule still adds nothing measurable:** proposed − drift-only is within ±0.001 everywhere;
   the ablations (no severity 0.4753, no waiting 0.4737) are no worse than the full rule (0.4754).
 - Five seeds: descriptive only. Clinical v2: running in Colab.
+
+---
+
+# v2 clinical results (Colab, configs/v2.yaml, 22 Oct 2026)
+
+130/130 runs complete, 0 failures, no pairing issues. Dev calibration under v2 confirmed threshold 6 and
+periodic interval 2. Tables: `results/clinical_v2/tables/results.md`.
+
+| Scenario | always-on | periodic | drift-only | proposed | proposed − periodic (seeds better) | proposed − drift-only (seeds better) |
+|---|---|---|---|---|---|---|
+| C0 no drift | 0.272 | **0.293** | 0.339 | 0.339 | +0.046 (1/5) | 0.000 |
+| C1 shift, clinics 1–2 | 0.279 | **0.304** | 0.322 | 0.317 | +0.013 (1/5) | −0.005 (4/5) |
+| C2 staggered shift | 0.280 | **0.305** | 0.317 | 0.317 | +0.012 (1/5) | +0.000 |
+
+- Periodic beats the drift-triggered methods in every clinical scenario, but spends 20.6 MB vs 9.1 MB.
+- Detection: 1.8/2 events in C1, 2/3 in C2 (v1: 0).
+- Proposed beats drift-only only in C1 (−0.005, 4/5 seeds) — the first case where the priority rule changes
+  outcomes, small and on 5 seeds.
+- C1 budget sweep: at b = 0.10 proposed 0.328 vs periodic 0.339 (7.1 MB vs 8.2 MB); at b ≥ 0.25 periodic wins.
+- Worst-clinic loss is better for periodic (0.55–0.56 vs 0.63–0.66).
+- Conclusion with synthetic v2: drift-triggered retraining helps only under tight budgets or staggered local
+  drift; with a moderate budget a fixed schedule is hard to beat. The priority rule is not a contribution.
