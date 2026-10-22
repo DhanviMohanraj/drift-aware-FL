@@ -157,3 +157,20 @@ Its one setting (EMA weight 0.3, from {0.3, 0.5, 0.8}) was chosen on dev seeds 1
 - b = 0.10: lowest loss in S2 and S3; beats periodic on 15/20 pairs.
 - b = 0.25: mixed (best only in S3).
 Clinical version: `python -m src.regime --dataset clinical` (Colab).
+
+## Regime study, clinical (Colab, 22 Oct 2026)
+
+`python -m src.regime --dataset clinical`: b ∈ {0.05, 0.10} × C1, C2 × periodic, drift-only, proposed, proposed v2
+× 5 seeds (90 final runs, 0 failures); periodic interval re-chosen per budget on dev seeds 101–102 (chosen: 2, 2).
+proposed v2's setting was chosen on synthetic dev data and reused unchanged. Table: `results/regime_clinical/results.md`.
+
+| Budget | Scenario | periodic | drift-only | proposed | proposed v2 | v2 better than periodic |
+|---|---|---|---|---|---|---|
+| 0.05 | C1 | 0.354 | 0.379 | 0.396 | **0.350** | 4/5 seeds |
+| 0.05 | C2 | **0.354** | 0.385 | 0.382 | 0.360 | 3/5 |
+| 0.10 | C1 | 0.336 | 0.337 | 0.336 | **0.316** | 4/5 |
+| 0.10 | C2 | 0.336 | 0.337 | 0.339 | **0.334** | 4/5 |
+
+- Proposed v2 has the lowest loss in 3 of 4 clinical cells and uses fewer bytes than periodic (7.1 vs 8.2 MB at b = 0.10).
+- The original proposed rule does not beat periodic on clinical data; the current-need priority is what helps.
+- Worst-clinic loss is still lower for periodic (e.g. b = 0.10, C1: 0.594 vs 0.609 for v2).
