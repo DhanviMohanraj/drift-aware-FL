@@ -197,3 +197,16 @@ periodic interval re-chosen on dev seed 101, 5 final seeds. Table: `results/regi
 - Drift-aware methods beat periodic in all 6 budget x scenario cells; v2 or v3 is best in 5 of 6 (drift-only ties v2 in SS2 at 0.10).
 - v2 beats periodic on 4-5 of 5 seeds at b = 0.05 (e.g. SS6 0.309 vs 0.316); v3 beats it on 3-4 of 5 at b = 0.10.
 - Worst-clinic loss is also lower than periodic for v2 and v3 in every cell (unlike the injected-shift clinical study).
+
+## Fresh-seed replication (Colab, seeds 66, 77, 88, 99, 111 — never used before; 23 Oct 2026)
+
+Same code and settings, no changes. Tables: `results/fresh_seeds/`.
+
+- **Synthetic — replicated.** At b = 0.05 and 0.10, drift-aware methods beat periodic in all 8 cells; v2 is best in
+  4 of 8 (e.g. S3 b = 0.10: 0.446 vs periodic 0.471, 5/5 seeds). At b = 0.25 periodic again wins S5 and S6, as before.
+  v2 has the lowest worst-clinic loss in 7 of 8 tight-budget cells.
+- **Semi-synthetic — replicated, strongest.** v2 is best in all 6 cells (e.g. SS3 b = 0.10: 0.292 vs 0.302, 5/5 seeds)
+  and has the lowest worst-clinic loss in all 6.
+- **Clinical — partly replicated.** At b = 0.05 drift-aware methods beat periodic in both scenarios (v2 best in C2:
+  0.327 vs 0.342), but at b = 0.10 periodic is best in C1 and v2 beats periodic on only 2/5 seeds in both scenarios.
+  The clinical advantage at b = 0.10 seen on the original seeds did not hold on fresh seeds.
