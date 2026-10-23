@@ -1,0 +1,33 @@
+# Regime study (semisynthetic, configs/v2.yaml)
+
+Periodic interval chosen per budget on dev seeds [101]: {0.05: 2, 0.1: 2}. Final seeds [11, 22, 33, 44, 55].
+Post-change pooled log loss, mean of 5 seeds (lower is better). 'better' = seeds where the method beats periodic on the same seed.
+
+## Budget b = 0.05
+
+| Scenario | always-on* | periodic | drift-only | proposed v2 | proposed v3 | v2 better than periodic | v3 better than periodic | v2 MB vs periodic MB |
+|---|---|---|---|---|---|---|---|---|
+| SS2 | 0.2766 | 0.3243 | 0.3200 | **0.3169** | 0.3183 | 4/5 | 3/5 | 4.12 vs 4.12 |
+| SS3 | 0.2795 | 0.3324 | 0.3257 | 0.3259 | **0.3247** | 4/5 | 3/5 | 4.12 vs 4.12 |
+| SS6 | 0.2752 | 0.3155 | 0.3137 | **0.3092** | 0.3105 | 5/5 | 3/5 | 4.12 vs 4.12 |
+
+## Budget b = 0.1
+
+| Scenario | always-on* | periodic | drift-only | proposed v2 | proposed v3 | v2 better than periodic | v3 better than periodic | v2 MB vs periodic MB |
+|---|---|---|---|---|---|---|---|---|
+| SS2 | 0.2766 | 0.3047 | **0.2960** | 0.2960 | 0.2972 | 4/5 | 4/5 | 8.16 vs 8.24 |
+| SS3 | 0.2795 | 0.3105 | 0.3038 | 0.3020 | **0.3016** | 4/5 | 4/5 | 8.24 vs 8.24 |
+| SS6 | 0.2752 | 0.2976 | 0.2926 | 0.2940 | **0.2906** | 3/5 | 4/5 | 7.41 vs 8.24 |
+
+## Worst-clinic post-change loss (mean of seeds; lower is better)
+
+| Budget | Scenario | periodic | drift-only | proposed v2 | proposed v3 |
+|---|---|---|---|---|---|
+| 0.05 | SS2 | 0.3636 | 0.3576 | 0.3528 | **0.3526** |
+| 0.05 | SS3 | 0.3601 | 0.3515 | 0.3519 | **0.3494** |
+| 0.05 | SS6 | 0.3554 | 0.3538 | **0.3474** | 0.3477 |
+| 0.1 | SS2 | 0.3363 | 0.3254 | **0.3250** | 0.3266 |
+| 0.1 | SS3 | 0.3332 | 0.3262 | 0.3233 | **0.3216** |
+| 0.1 | SS6 | 0.3310 | 0.3250 | 0.3256 | **0.3230** |
+
+*always-on is unbudgeted and shown only as a reference.

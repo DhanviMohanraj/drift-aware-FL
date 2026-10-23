@@ -193,6 +193,12 @@ class ClinicalWorld:
         return out
 
 
+_SEMI_FIT_CACHE: dict = {}   # (preprocessing checksum, split checksum) -> fitted (w, b); identical for every run of a seed
+
+
+_SEMI_FIT_CACHE: dict = {}   # (preprocessing, split checksum) -> fitted (w, b); identical for every run of a seed
+
+
 class SemiSyntheticWorld(ClinicalWorld):
     """Real UCI patients and features; outcomes drawn from a logistic risk model fitted on the warm-start pool.
 
@@ -210,9 +216,11 @@ class SemiSyntheticWorld(ClinicalWorld):
         super().__init__(cfg, seed, scenario, prepared)
         from sklearn.linear_model import LogisticRegression
         Xw, yw = prepared["X"]["warm"], prepared["y"]["warm"]
-        lr = LogisticRegression(C=1.0, max_iter=3000).fit(Xw, yw)
-        self.w = lr.coef_[0].astype(np.float64)
-        self.b = float(lr.intercept_[0])
+        key = (prepared["checksums"]["preprocessing"], prepared["checksums"]["split"])
+        if key not in _SEMI_FIT_CACHE:   # the fit depends only on the warm-start pool, so it is reused
+            lr = LogisticRegression(C=1.0, max_iter=3000).fit(Xw, yw)
+            _SEMI_FIT_CACHE[key] = (lr.coef_[0].astype(np.float64), float(lr.intercept_[0]))
+        self.w, self.b = _SEMI_FIT_CACHE[key]
         base_rate = float(_sigmoid(Xw @ self.w + self.b).mean())
         top = np.argsort(-np.abs(self.w))[:self.TOP_K]
         self.w_concept = self.w.copy()

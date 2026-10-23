@@ -186,3 +186,14 @@ because on synthetic data v2 already beats periodic on worst-clinic loss everywh
 - b = 0.25: v3 has the lowest average in S2 and S3 and the lowest worst-clinic loss in all four scenarios.
 - Reading: a fairness floor spends scarce updates on clinics that do not need them; it only pays off when the
   budget is moderate. The worst-clinic gap that motivated v3 appears on clinical data only (clinical test pending).
+
+## Semi-synthetic study (focused, 23 Oct 2026)
+
+Real UCI patients/features and clinics (alpha = 5); outcomes drawn from a logistic risk model fitted on the warm-start
+pool (base readmission rate 7.1%); concept drift = the 5 strongest risk factors reverse (SS2 clinics 1-2 at t=40;
+SS3 staggered 30/50/70; SS6 clinic 1 only). `python -m src.regime --dataset semisynthetic --quick`: b in {0.05, 0.10},
+periodic interval re-chosen on dev seed 101, 5 final seeds. Table: `results/regime_semisynthetic/results.md`.
+
+- Drift-aware methods beat periodic in all 6 budget x scenario cells; v2 or v3 is best in 5 of 6 (drift-only ties v2 in SS2 at 0.10).
+- v2 beats periodic on 4-5 of 5 seeds at b = 0.05 (e.g. SS6 0.309 vs 0.316); v3 beats it on 3-4 of 5 at b = 0.10.
+- Worst-clinic loss is also lower than periodic for v2 and v3 in every cell (unlike the injected-shift clinical study).

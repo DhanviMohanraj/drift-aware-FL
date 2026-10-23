@@ -71,7 +71,10 @@ def main():
     DATASET = a.dataset
     g = GRIDS[a.dataset]
     BUDGETS, SCENARIOS, DEV_SEEDS, METHODS = g["budgets"], g["scenarios"], g["dev_seeds"], g["methods"]
-    if a.quick:
+    if a.quick and a.dataset == "semisynthetic":   # focused: concept drift on real patients, tight budgets
+        BUDGETS, SCENARIOS, DEV_SEEDS = [0.05, 0.10], ["SS2", "SS3", "SS6"], [101]
+        METHODS = ["periodic", "drift_only", "proposed_v2", "proposed_v3"]
+    elif a.quick:
         SCENARIOS, DEV_SEEDS = SCENARIOS[:1], DEV_SEEDS[:1]
     cfg = load_config(a.config)
     import json
@@ -106,12 +109,13 @@ def main():
              f"Post-change pooled log loss, mean of {len(seeds)} seeds (lower is better). 'better' = seeds where the method "
              "beats periodic on the same seed.", ""]
     ao = res[res.method == "always_on"].groupby("scenario").post_logloss.mean()
+    budgeted_all = ["periodic", "random", "drift_only", "proposed", "proposed_v2", "proposed_v3"]
     names = {"periodic": "periodic", "random": "random", "drift_only": "drift-only", "proposed": "proposed",
              "proposed_v2": "proposed v2", "proposed_v3": "proposed v3", "known_time": "known-time"}
     budgeted = [m for m in METHODS if m != "known_time"]
     for b in BUDGETS:
         head = ["Scenario", "always-on*"] + [names[m] for m in METHODS] + \
-               ["v2 better than periodic", "v3 better than periodic", "v3 MB vs periodic MB"]
+               ["v2 better than periodic", "v3 better than periodic", "v2 MB vs periodic MB"]
         lines += [f"## Budget b = {b:g}", "", "| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
         for sc in SCENARIOS:
             g = res[(res.b == b) & (res.scenario == sc)]
@@ -122,7 +126,7 @@ def main():
             best = min(m.loc[budgeted])
             cell = lambda k: (f"**{m[k]:.4f}**" if k in budgeted and m[k] == best else f"{m[k]:.4f}")
             row = [sc, f"{ao[sc]:.4f}"] + [cell(k) for k in METHODS] + \
-                  [f"{beat('proposed_v2')}/{len(seeds)}", f"{beat('proposed_v3')}/{len(seeds)}", f"{mb['proposed_v3']:.2f} vs {mb['periodic']:.2f}"]
+                  [f"{beat('proposed_v2')}/{len(seeds)}", f"{beat('proposed_v3')}/{len(seeds)}", f"{mb['proposed_v2']:.2f} vs {mb['periodic']:.2f}"]
             lines.append("| " + " | ".join(row) + " |")
         lines.append("")
     lines += ["## Worst-clinic post-change loss (mean of seeds; lower is better)", "",
